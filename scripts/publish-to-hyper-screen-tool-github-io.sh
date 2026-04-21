@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Creates hyperscreen/hyperscreen.github.io (if missing) and pushes this repo's main branch.
-# Requires: GitHub CLI (gh) and permission to create repos in the hyperscreen org.
-# One-time: run `gh auth login` (or set GH_TOKEN with repo scope for the hyperscreen org).
+# Creates hyper-screen-tool/hyper-screen-tool.github.io (if missing) and pushes this repo's main branch.
+# Requires: GitHub CLI (gh) and permission to create repos in the hyper-screen-tool org.
+# One-time: run `gh auth login` (or set GH_TOKEN with repo scope for that org).
 
 set -euo pipefail
 
-REPO="hyperscreen/hyperscreen.github.io"
+REPO="hyper-screen-tool/hyper-screen-tool.github.io"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
 
@@ -29,15 +29,15 @@ fi
 
 cd "$ROOT"
 
-if git remote get-url hyperscreen-io >/dev/null 2>&1; then
-  git remote set-url hyperscreen-io "https://github.com/$REPO.git"
+if git remote get-url hyper-screen-tool-io >/dev/null 2>&1; then
+  git remote set-url hyper-screen-tool-io "https://github.com/$REPO.git"
 else
-  git remote add hyperscreen-io "https://github.com/$REPO.git"
+  git remote add hyper-screen-tool-io "https://github.com/$REPO.git"
 fi
 
-echo "Pushing main to hyperscreen-io ..."
-git push -u hyperscreen-io main
+echo "Pushing main to hyper-screen-tool-io ..."
+git push -u hyper-screen-tool-io main
 
 echo
 echo "Done. Enable Pages → GitHub Actions on the repo if you have not already."
-echo "Site URL (after deploy): https://hyperscreen.github.io/"
+echo "Site URL (after deploy): https://hyper-screen-tool.github.io/"
