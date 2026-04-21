@@ -2,46 +2,48 @@
 
 Static site for the paper and hosted model files.
 
-## Site URL: https://HYPERSCREEN.github.io
+## Site URL: https://hyperscreen.github.io/
 
-GitHub only serves that address when **both** are true:
+GitHub’s org account for this project is **`hyperscreen`** (all lowercase in URLs). The user/org Pages repo must be named **`hyperscreen.github.io`**. That publishes the site at the **root**: **https://hyperscreen.github.io/**
 
-1. The **owner** of the repo is the GitHub user or organization named **`HYPERSCREEN`** (not your personal account name in the URL).
-2. The **repository name** is exactly **`HYPERSCREEN.github.io`** (the special Pages name for the root site).
+The **hyperscreen** organization already exists on GitHub. The **`hyperscreen.github.io`** repository may still need to be created and wired up to this folder.
 
-Then the site is published at the **root**: **https://HYPERSCREEN.github.io/** (no extra path).
+### Publish with one script (after you log in to GitHub CLI)
 
-### Set it up
+I cannot create the repo or push from this environment without **your** GitHub credentials. On your Mac, run once:
 
-1. On GitHub, create an **organization** named **HYPERSCREEN** (or use a user account named HYPERSCREEN if you prefer and the name is available).
-2. Under that account, create a **new public** repository named **`HYPERSCREEN.github.io`** (case must match your account name’s casing rules).
-3. Point this project at that repo and push `main`:
+```bash
+gh auth login
+```
+
+Then from this project:
 
 ```bash
 cd "/Users/ctang/Desktop/Sapru Lab Materials/ML PAPER/Website"
-git remote remove origin   # only if you still have the old remote
-git remote add origin https://github.com/HYPERSCREEN/HYPERSCREEN.github.io.git
-git push -u origin main
+./scripts/publish-to-hyperscreen-github-io.sh
 ```
 
-4. In that repo: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+That script creates **`hyperscreen/hyperscreen.github.io`** if it does not exist, adds a git remote named **`hyperscreen-io`**, and pushes **`main`**. You need permission to create repositories in the **hyperscreen** org (or ask an org owner to create an empty **`hyperscreen.github.io`** repo and run only the `git remote` / `git push` parts).
 
-After the workflow succeeds, the live URL is **https://HYPERSCREEN.github.io/**
+Then in that repo: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
-This codebase does not need structural changes for that URL: paths like `css/style.css` stay root-relative and work for a user/org Pages site.
+This codebase does not need structural changes for that URL: paths like `css/style.css` stay root-relative.
+
+### Manual remote (if you created the empty repo on the web)
+
+```bash
+cd "/Users/ctang/Desktop/Sapru Lab Materials/ML PAPER/Website"
+git remote add hyperscreen-io https://github.com/hyperscreen/hyperscreen.github.io.git
+git push -u hyperscreen-io main
+```
 
 ---
 
-## Current repo (personal account)
+## Mirror on personal account (optional)
 
-If you keep publishing from **ctangtyy/HYPERSCREEN** instead, the URL is a **project** site:
-
-**https://ctangtyy.github.io/HYPERSCREEN/**
-
-Connect / push:
+**ctangtyy/HYPERSCREEN** is a **project** site: **https://ctangtyy.github.io/HYPERSCREEN/**
 
 ```bash
-cd "/Users/ctang/Desktop/Sapru Lab Materials/ML PAPER/Website"
 git remote add origin https://github.com/ctangtyy/HYPERSCREEN.git
 git push -u origin main
 ```
