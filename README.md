@@ -16,13 +16,13 @@ Web calculator for the pediatric critical care **hyperinflammatory vs hypoinflam
 | Setting | Value |
 | --- | ---: |
 | Derivation cohorts | CAFPINT, PALI, REDVENT |
-| Predictors (manuscript Table 14) | 14 |
+| Predictors (non-zero at λ<sub>min</sub>) | 19 |
 | Elastic-net α | 0.15 |
 | Positive-class weight | 5.5 |
 | Classification threshold | 0.70 |
 | Missing data | Median imputation |
 
-Coefficients match the manuscript **Table: Final 14 model features** and are stored in [`assets/model/coefficients.json`](assets/model/coefficients.json).
+Coefficients match `classifier_coefficients_clove model.csv` from the stepwise → elastic-net validation pipeline and are stored in [`assets/model/coefficients.json`](assets/model/coefficients.json).
 
 ## Local preview
 
