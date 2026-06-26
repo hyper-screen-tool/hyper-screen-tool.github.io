@@ -30,7 +30,7 @@
           </div>
           <div class="header-meta">
             <div class="meta-chip">Threshold 0.70</div>
-            <div class="meta-chip">19 predictors</div>
+            <div class="meta-chip">14 predictors</div>
             <div class="meta-chip">Median imputation</div>
           </div>
         </div>
@@ -102,11 +102,11 @@
         <article class="info-card">
           <h2 id="about-heading">About the model</h2>
           <p>
-            This tool implements the final elastic-net penalized logistic
-            regression model from our multi-cohort machine learning study.
-            The model was derived on three cohorts (CAFPINT, PALI, REDVENT)
-            using backward stepwise selection followed by elastic-net
-            regularization (α = 0.15, positive-class weight = 5.5).
+            This tool implements the published 14-feature elastic-net
+            penalized logistic regression model from our multi-cohort machine
+            learning study. The model was derived on three cohorts (CAFPINT,
+            PALI, REDVENT) with α = 0.15, positive-class weight = 5.5, and
+            λ<sub>min</sub> selected by 10-fold cross-validation.
           </p>
           <p>
             Patients with predicted probability <strong>≥ 0.70</strong> are
