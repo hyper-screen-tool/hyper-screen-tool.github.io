@@ -65,10 +65,6 @@ function createContinuousField(predictor) {
   input.id = `${predictor.id}-value`;
   input.name = predictor.id;
   input.className = "value-input";
-  input.placeholder = predictor.placeholder;
-  input.step = String(predictor.step ?? "any");
-  if (predictor.min != null) input.min = String(predictor.min);
-  if (predictor.max != null) input.max = String(predictor.max);
   input.autocomplete = "off";
   input.inputMode = "decimal";
 

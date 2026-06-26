@@ -27,7 +27,6 @@ export const MODEL = {
       median: 7.9,
       step: 0.1,
       min: 0,
-      placeholder: "7.9",
     },
     {
       id: "pelodplate",
@@ -39,7 +38,6 @@ export const MODEL = {
       median: 128,
       step: 1,
       min: 0,
-      placeholder: "128",
     },
     {
       id: "pelodpt",
@@ -51,7 +49,6 @@ export const MODEL = {
       median: 16.1,
       step: 0.1,
       min: 0,
-      placeholder: "16.1",
     },
     {
       id: "pelodhr",
@@ -63,7 +60,6 @@ export const MODEL = {
       median: 148,
       step: 1,
       min: 0,
-      placeholder: "148",
     },
     {
       id: "pelodlact",
@@ -75,7 +71,6 @@ export const MODEL = {
       median: 2,
       step: 0.1,
       min: 0,
-      placeholder: "2.0",
     },
     {
       id: "prismpao2lo",
@@ -87,7 +82,6 @@ export const MODEL = {
       median: 63.2,
       step: 0.1,
       min: 0,
-      placeholder: "63.2",
     },
     {
       id: "prismbunhi",
@@ -99,7 +93,6 @@ export const MODEL = {
       median: 13,
       step: 0.1,
       min: 0,
-      placeholder: "13",
     },
     {
       id: "prismph",
@@ -112,7 +105,6 @@ export const MODEL = {
       step: 0.01,
       min: 6.5,
       max: 8,
-      placeholder: "7.32",
     },
     {
       id: "prismtemphi",
@@ -125,7 +117,6 @@ export const MODEL = {
       step: 0.1,
       min: 30,
       max: 45,
-      placeholder: "38.0",
     },
     {
       id: "prismgluc",
@@ -137,7 +128,6 @@ export const MODEL = {
       median: 155,
       step: 1,
       min: 0,
-      placeholder: "155",
     },
     {
       id: "prisminpt",
@@ -199,7 +189,6 @@ export const MODEL = {
       median: 19.5,
       step: 0.1,
       min: 0,
-      placeholder: "19.5",
     },
     {
       id: "male",
