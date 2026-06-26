@@ -472,21 +472,35 @@ a {
   color: var(--ink-muted);
   list-style: none;
   user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
 }
 
 .collapsible-summary::-webkit-details-marker {
   display: none;
 }
 
+.collapsible-summary::marker {
+  content: "";
+  display: none;
+}
+
 .collapsible-summary::before {
-  content: "▸";
-  display: inline-block;
-  margin-right: 0.4rem;
+  content: "";
+  flex-shrink: 0;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
   transition: transform 0.15s ease;
+  opacity: 0.75;
 }
 
 .collapsible-details[open] .collapsible-summary::before {
-  transform: rotate(90deg);
+  transform: rotate(45deg);
+  opacity: 1;
 }
 
 .collapsible-details[open] .collapsible-summary {
