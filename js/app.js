@@ -1,4 +1,5 @@
 import { MODEL } from "./model-config.js";
+import { TEST_CASES } from "./test-cases.js";
 import {
   predict,
   formatProbability,
@@ -16,8 +17,15 @@ const imputedList = document.getElementById("imputed-list");
 const contributionList = document.getElementById("contribution-list");
 const resetButton = document.getElementById("reset-button");
 const calculateButton = document.getElementById("calculate-button");
+const testCaseSelect = document.getElementById("test-case-select");
+const loadTestCaseButton = document.getElementById("load-test-case-button");
+const testCaseBanner = document.getElementById("test-case-banner");
+const testCaseExpected = document.getElementById("test-case-expected");
+const testCaseMatch = document.getElementById("test-case-match");
 
 let hasCalculated = false;
+let activeTestCase = null;
+let isLoadingTestCase = false;
 
 function groupPredictors() {
   const groups = new Map();
@@ -88,6 +96,7 @@ function createContinuousField(predictor) {
       input.classList.remove("is-missing");
       input.focus();
     }
+    clearTestCaseBanner();
     if (hasCalculated) runCalculation();
   });
 
@@ -97,6 +106,7 @@ function createContinuousField(predictor) {
       input.disabled = false;
       input.classList.remove("is-missing");
     }
+    clearTestCaseBanner();
     if (hasCalculated) runCalculation();
   });
 
@@ -143,6 +153,7 @@ function createBinaryField(predictor) {
   }
 
   options.addEventListener("change", () => {
+    clearTestCaseBanner();
     if (hasCalculated) runCalculation();
   });
 
@@ -174,6 +185,98 @@ function renderForm() {
     section.append(heading, grid);
     form.append(section);
   }
+}
+
+function populateTestCaseSelect() {
+  const groups = [
+    { key: "complete", label: "Complete data" },
+    { key: "missing", label: "Missing data" },
+  ];
+
+  for (const group of groups) {
+    const optgroup = document.createElement("optgroup");
+    optgroup.label = group.label;
+    for (const testCase of TEST_CASES.filter((tc) => tc.category === group.key)) {
+      const option = document.createElement("option");
+      option.value = testCase.id;
+      option.textContent = testCase.label;
+      optgroup.append(option);
+    }
+    testCaseSelect.append(optgroup);
+  }
+}
+
+function setContinuousField(predictorId, entry) {
+  const input = document.getElementById(`${predictorId}-value`);
+  const missing = document.getElementById(`${predictorId}-missing`);
+
+  if (entry.missing) {
+    missing.checked = true;
+    input.value = "";
+    input.disabled = true;
+    input.classList.add("is-missing");
+    return;
+  }
+
+  missing.checked = false;
+  input.disabled = false;
+  input.classList.remove("is-missing");
+  input.value = String(entry.value);
+}
+
+function setBinaryField(predictorId, entry) {
+  const radios = form.querySelectorAll(`input[name="${predictorId}"]`);
+  for (const radio of radios) {
+    radio.checked = false;
+  }
+
+  if (entry.missing) {
+    const missingRadio = form.querySelector(
+      `input[name="${predictorId}"][value="missing"]`
+    );
+    if (missingRadio) missingRadio.checked = true;
+    return;
+  }
+
+  const target = form.querySelector(
+    `input[name="${predictorId}"][value="${entry.value}"]`
+  );
+  if (target) target.checked = true;
+}
+
+function loadTestCase(testCaseId) {
+  const testCase = TEST_CASES.find((tc) => tc.id === testCaseId);
+  if (!testCase) return;
+
+  isLoadingTestCase = true;
+  activeTestCase = testCase;
+
+  for (const predictor of MODEL.predictors) {
+    const entry = testCase.inputs[predictor.id] ?? { missing: true };
+    if (predictor.type === "continuous") {
+      setContinuousField(predictor.id, entry);
+    } else {
+      setBinaryField(predictor.id, entry);
+    }
+  }
+
+  isLoadingTestCase = false;
+
+  testCaseBanner.hidden = false;
+  testCaseExpected.textContent = `${testCase.label} — expected ${formatProbability(testCase.expected_probability)} → ${testCase.expected_result}`;
+  testCaseMatch.textContent = "";
+  testCaseMatch.className = "test-case-match";
+
+  runCalculation();
+}
+
+function clearTestCaseBanner() {
+  if (isLoadingTestCase) return;
+  activeTestCase = null;
+  testCaseBanner.hidden = true;
+  testCaseExpected.textContent = "";
+  testCaseMatch.textContent = "";
+  testCaseMatch.className = "test-case-match";
 }
 
 function readInputs() {
@@ -247,6 +350,35 @@ function renderImputedFields(fields) {
   }
 }
 
+function evaluateTestCase(result) {
+  if (!activeTestCase) return;
+
+  const probDelta = Math.abs(result.probability - activeTestCase.expected_probability);
+  const classMatch =
+    classificationLabel(result.classification) === activeTestCase.expected_result;
+  const probMatch = probDelta <= 0.002;
+
+  if (classMatch && probMatch) {
+    testCaseMatch.textContent = "✓ Matches expected probability and classification";
+    testCaseMatch.className = "test-case-match is-pass";
+    return;
+  }
+
+  const parts = [];
+  if (!classMatch) {
+    parts.push(
+      `classification mismatch (got ${classificationLabel(result.classification)})`
+    );
+  }
+  if (!probMatch) {
+    parts.push(
+      `probability off by ${(probDelta * 100).toFixed(2)} pp (got ${formatProbability(result.probability)})`
+    );
+  }
+  testCaseMatch.textContent = `✗ ${parts.join("; ")}`;
+  testCaseMatch.className = "test-case-match is-fail";
+}
+
 function runCalculation() {
   const result = predict(readInputs());
   hasCalculated = true;
@@ -263,11 +395,14 @@ function runCalculation() {
 
   renderImputedFields(result.imputedFields);
   renderContributions(result.contributions);
+  evaluateTestCase(result);
 }
 
 function resetForm() {
   form.reset();
   hasCalculated = false;
+  testCaseSelect.value = "";
+  clearTestCaseBanner();
 
   for (const predictor of MODEL.predictors) {
     if (predictor.type === "continuous") {
@@ -283,13 +418,23 @@ function resetForm() {
 }
 
 renderForm();
+populateTestCaseSelect();
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   runCalculation();
 });
 
+form.addEventListener("change", () => {
+  clearTestCaseBanner();
+});
+
 resetButton.addEventListener("click", resetForm);
 calculateButton.addEventListener("click", runCalculation);
+loadTestCaseButton.addEventListener("click", () => {
+  if (testCaseSelect.value) {
+    loadTestCase(testCaseSelect.value);
+  }
+});
 
 document.getElementById("year").textContent = String(new Date().getFullYear());
