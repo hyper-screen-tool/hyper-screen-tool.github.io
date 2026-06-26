@@ -400,6 +400,9 @@ function resetForm() {
   testCaseSelect.value = "";
   clearTestCaseBanner();
 
+  const advancedDetails = document.getElementById("advanced-details");
+  if (advancedDetails) advancedDetails.open = false;
+
   for (const predictor of MODEL.predictors) {
     if (predictor.type === "continuous") {
       const input = document.getElementById(`${predictor.id}-value`);
