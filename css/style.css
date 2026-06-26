@@ -156,22 +156,18 @@ a {
   padding-bottom: 1.25rem;
 }
 
-.test-case-controls {
+.test-case-details {
   margin: 0 1.35rem 1rem;
-  padding: 1rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  background: linear-gradient(180deg, #f7fbfd, #f0f6fa);
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--line);
 }
 
-.test-case-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--accent-strong);
+.test-case-panel {
+  padding-top: 0.65rem;
+}
+
+.test-case-controls {
+  margin: 0;
 }
 
 .test-case-row {
@@ -183,17 +179,18 @@ a {
 .test-case-select {
   flex: 1;
   min-width: 0;
-  padding: 0.72rem 0.85rem;
+  padding: 0.65rem 0.8rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: var(--bg-elevated);
   color: var(--ink);
   font: inherit;
+  font-size: 0.9rem;
 }
 
 .test-case-bar {
-  margin: 0 1.35rem 1rem;
-  padding: 0.85rem 1rem;
+  margin: 0 0 0.75rem;
+  padding: 0.75rem 0.85rem;
   border-radius: var(--radius-sm);
   border: 1px solid #cfe4ec;
   background: #eef7fa;
@@ -388,6 +385,12 @@ a {
   color: var(--ink-muted);
 }
 
+.btn-compact {
+  padding: 0.65rem 0.95rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
 .result-panel {
   position: sticky;
   top: 1rem;
@@ -477,13 +480,13 @@ a {
   margin-top: 1.25rem;
 }
 
-.advanced-details {
+.collapsible-details {
   margin-top: 1.25rem;
   border-top: 1px solid var(--line);
   padding-top: 0.75rem;
 }
 
-.advanced-summary {
+.collapsible-summary {
   cursor: pointer;
   font-size: 0.88rem;
   font-weight: 600;
@@ -492,27 +495,27 @@ a {
   user-select: none;
 }
 
-.advanced-summary::-webkit-details-marker {
+.collapsible-summary::-webkit-details-marker {
   display: none;
 }
 
-.advanced-summary::before {
+.collapsible-summary::before {
   content: "▸";
   display: inline-block;
   margin-right: 0.4rem;
   transition: transform 0.15s ease;
 }
 
-.advanced-details[open] .advanced-summary::before {
+.collapsible-details[open] .collapsible-summary::before {
   transform: rotate(90deg);
 }
 
-.advanced-details[open] .advanced-summary {
+.collapsible-details[open] .collapsible-summary {
   color: var(--accent-strong);
   margin-bottom: 0.5rem;
 }
 
-.advanced-details .result-section {
+.collapsible-details .result-section {
   margin-top: 0.75rem;
 }
 
@@ -710,7 +713,7 @@ a {
   }
 
   .test-case-controls {
-    background: linear-gradient(180deg, #132433, #10202d);
+    background: transparent;
   }
 
   .test-case-bar {

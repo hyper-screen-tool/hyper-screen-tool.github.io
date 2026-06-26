@@ -47,22 +47,25 @@
             </p>
           </div>
 
-          <div class="test-case-bar" id="test-case-banner" hidden>
-            <p class="test-case-expected" id="test-case-expected"></p>
-            <p class="test-case-match" id="test-case-match"></p>
-          </div>
-
-          <div class="test-case-controls">
-            <label class="test-case-label" for="test-case-select">Load test case</label>
-            <div class="test-case-row">
-              <select id="test-case-select" class="test-case-select">
-                <option value="">Choose a validated example…</option>
-              </select>
-              <button type="button" class="btn btn-secondary" id="load-test-case-button">
-                Load &amp; calculate
-              </button>
+          <details class="collapsible-details test-case-details" id="test-case-details">
+            <summary class="collapsible-summary">Try test cases</summary>
+            <div class="test-case-panel">
+              <div class="test-case-bar" id="test-case-banner" hidden>
+                <p class="test-case-expected" id="test-case-expected"></p>
+                <p class="test-case-match" id="test-case-match"></p>
+              </div>
+              <div class="test-case-controls">
+                <div class="test-case-row">
+                  <select id="test-case-select" class="test-case-select" aria-label="Test case">
+                    <option value="">Choose a validated example…</option>
+                  </select>
+                  <button type="button" class="btn btn-secondary btn-compact" id="load-test-case-button">
+                    Load &amp; calculate
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          </details>
 
           <form id="predictor-form" novalidate></form>
 
@@ -107,8 +110,8 @@
               <ul class="simple-list" id="imputed-list"></ul>
             </section>
 
-            <details class="advanced-details" id="advanced-details">
-              <summary class="advanced-summary">Advanced details</summary>
+            <details class="collapsible-details" id="advanced-details">
+              <summary class="collapsible-summary">Advanced details</summary>
               <section class="result-section" aria-labelledby="contrib-heading">
                 <h3 id="contrib-heading">Linear contributions (log-odds)</h3>
                 <ul class="contribution-list" id="contribution-list"></ul>

@@ -258,6 +258,9 @@ function loadTestCase(testCaseId) {
 
   isLoadingTestCase = false;
 
+  const testCaseDetails = document.getElementById("test-case-details");
+  if (testCaseDetails) testCaseDetails.open = true;
+
   testCaseBanner.hidden = false;
   testCaseExpected.textContent = `${testCase.label} — expected ${formatProbability(testCase.expected_probability)} → ${testCase.expected_result}`;
   testCaseMatch.textContent = "";
@@ -402,6 +405,9 @@ function resetForm() {
 
   const advancedDetails = document.getElementById("advanced-details");
   if (advancedDetails) advancedDetails.open = false;
+
+  const testCaseDetails = document.getElementById("test-case-details");
+  if (testCaseDetails) testCaseDetails.open = false;
 
   for (const predictor of MODEL.predictors) {
     if (predictor.type === "continuous") {
