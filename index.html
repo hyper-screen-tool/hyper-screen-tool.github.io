@@ -3,42 +3,148 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>HYPERSCREEN</title>
+    <meta
+      name="description"
+      content="HYPER-SCREEN: pediatric critical care inflammatory subphenotype classifier using PRISM-III and PELOD-2 variables."
+    />
+    <title>HYPER-SCREEN | Inflammatory Subphenotype Classifier</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <header class="site-header">
-      <h1>HYPERSCREEN</h1>
-      <p class="subtitle">ML paper &amp; model (edit this line)</p>
-    </header>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="header-inner">
+          <div class="brand">
+            <p class="eyebrow">Sapru Lab · Pediatric Critical Care</p>
+            <h1>HYPER-SCREEN</h1>
+            <p class="subtitle">
+              Elastic-net classifier for hyperinflammatory vs hypoinflammatory
+              subphenotypes, trained on CAFPINT, PALI, and REDVENT.
+            </p>
+          </div>
+          <div class="header-meta">
+            <div class="meta-chip">Threshold 0.70</div>
+            <div class="meta-chip">19 predictors</div>
+            <div class="meta-chip">Median imputation</div>
+          </div>
+        </div>
+      </header>
 
-    <main>
-      <section aria-labelledby="overview-heading">
-        <h2 id="overview-heading">Overview</h2>
-        <p>
-          Replace this with a brief summary of the paper and what the hosted model does.
-        </p>
+      <main class="app-layout">
+        <section class="panel input-panel" aria-labelledby="inputs-heading">
+          <div class="panel-header">
+            <h2 id="inputs-heading">Patient inputs</h2>
+            <p>
+              Enter available PRISM-III, PELOD-2, and demographic variables.
+              Check <strong>Missing</strong> or leave a field blank to impute
+              with the development-cohort median.
+            </p>
+          </div>
+
+          <form id="predictor-form" novalidate></form>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="reset-button">
+              Reset
+            </button>
+            <button type="submit" class="btn btn-primary" id="calculate-button" form="predictor-form">
+              Calculate prediction
+            </button>
+          </div>
+        </section>
+
+        <aside class="panel result-panel" id="result-panel" aria-live="polite">
+          <div class="panel-header">
+            <h2>Prediction</h2>
+            <p>Probability of hyperinflammatory subphenotype membership.</p>
+          </div>
+
+          <div class="result-placeholder" id="result-placeholder">
+            <div class="placeholder-icon" aria-hidden="true">◌</div>
+            <p>Enter patient values and select <strong>Calculate prediction</strong>.</p>
+          </div>
+
+          <div class="result-content" id="result-content" hidden>
+            <div class="probability-card">
+              <p class="probability-label">Predicted probability</p>
+              <p class="probability-value" id="probability-value">—</p>
+              <p class="threshold-note" id="threshold-note"></p>
+            </div>
+
+            <div
+              class="classification-badge"
+              id="classification-badge"
+              role="status"
+            >
+              —
+            </div>
+
+            <section class="result-section" aria-labelledby="imputed-heading">
+              <h3 id="imputed-heading">Imputed values</h3>
+              <ul class="simple-list" id="imputed-list"></ul>
+            </section>
+
+            <section class="result-section" aria-labelledby="contrib-heading">
+              <h3 id="contrib-heading">Linear contributions (log-odds)</h3>
+              <ul class="contribution-list" id="contribution-list"></ul>
+            </section>
+          </div>
+        </aside>
+      </main>
+
+      <section class="info-grid" aria-labelledby="about-heading">
+        <article class="info-card">
+          <h2 id="about-heading">About the model</h2>
+          <p>
+            This tool implements the final elastic-net penalized logistic
+            regression model from our multi-cohort machine learning study.
+            The model was derived on three cohorts (CAFPINT, PALI, REDVENT)
+            using backward stepwise selection followed by elastic-net
+            regularization (α = 0.15, positive-class weight = 5.5).
+          </p>
+          <p>
+            Patients with predicted probability <strong>≥ 0.70</strong> are
+            classified as <strong>hyperinflammatory</strong>; values below
+            0.70 are classified as <strong>hypoinflammatory</strong>.
+          </p>
+        </article>
+
+        <article class="info-card">
+          <h2>Missing data</h2>
+          <p>
+            Missing predictors are replaced with the median value from the
+            combined development dataset, matching the imputation strategy used
+            during model training. Imputed fields are listed in the results
+            panel.
+          </p>
+          <p>
+            Model coefficients are available in
+            <a href="assets/model/coefficients.json">coefficients.json</a>.
+          </p>
+        </article>
+
+        <article class="info-card disclaimer">
+          <h2>Clinical disclaimer</h2>
+          <p>
+            HYPER-SCREEN is a research decision-support tool and is not a
+            substitute for clinical judgment. Predictions should be interpreted
+            in the context of the full clinical picture. For research use and
+            screening enrichment only.
+          </p>
+        </article>
       </section>
 
-      <section aria-labelledby="model-heading">
-        <h2 id="model-heading">Model</h2>
-        <p>
-          Add download links or embed a demo here. Place model files under
-          <code>assets/models/</code> when ready.
-        </p>
-        <ul class="links">
-          <li><a href="#" aria-disabled="true">Paper (PDF) — link TBD</a></li>
-          <li><a href="#" aria-disabled="true">Code — link TBD</a></li>
-          <li><a href="assets/models/">Model artifacts folder</a></li>
-        </ul>
-      </section>
-    </main>
+      <footer class="site-footer">
+        <p>© <span id="year"></span> Sapru Lab. HYPER-SCREEN inflammatory subphenotype classifier.</p>
+      </footer>
+    </div>
 
-    <footer class="site-footer">
-      <p>© <span id="year"></span></p>
-    </footer>
-    <script>
-      document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
+    <script type="module" src="js/app.js"></script>
   </body>
 </html>

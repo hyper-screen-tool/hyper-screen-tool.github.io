@@ -1,55 +1,76 @@
-# HYPERSCREEN
+# HYPER-SCREEN
 
-Static site for the paper and hosted model files.
+Web calculator for the pediatric critical care **hyperinflammatory vs hypoinflammatory** subphenotype classifier from the multi-cohort ML paper.
 
-## Site URL: https://hyper-screen-tool.github.io/
+**Live site:** [https://hyper-screen-tool.github.io/](https://hyper-screen-tool.github.io/)
 
-This project targets the GitHub org **`hyper-screen-tool`**. The user/org Pages repo must be named **`hyper-screen-tool.github.io`**. That publishes the site at the **root**: **https://hyper-screen-tool.github.io/**
+## What it does
 
-### Publish with one script (after you log in to GitHub CLI)
+- Implements the **elastic-net penalized logistic regression** model trained on **CAFPINT, PALI, and REDVENT**
+- Uses the published **lambda.min coefficients** and **0.70 classification threshold**
+- Supports **missing inputs** via median imputation (same strategy as model development)
+- Runs entirely in the browser — no patient data is sent to a server
 
-On your Mac, run once:
+## Model summary
 
-```bash
-gh auth login
-```
+| Setting | Value |
+| --- | ---: |
+| Derivation cohorts | CAFPINT, PALI, REDVENT |
+| Predictors (non-zero at λ<sub>min</sub>) | 19 |
+| Elastic-net α | 0.15 |
+| Positive-class weight | 5.5 |
+| Classification threshold | 0.70 |
+| Missing data | Median imputation |
 
-Then from this project:
-
-```bash
-cd "/Users/ctang/Desktop/Sapru Lab Materials/ML PAPER/Website"
-./scripts/publish-to-hyper-screen-tool-github-io.sh
-```
-
-That script creates **`hyper-screen-tool/hyper-screen-tool.github.io`** if it does not exist, adds a git remote named **`hyper-screen-tool-io`**, and pushes **`main`**. You need permission to create repositories in the **hyper-screen-tool** org (or ask an org owner to create an empty **`hyper-screen-tool.github.io`** repo and run only the `git remote` / `git push` parts).
-
-Then in that repo: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-
-This codebase does not need structural changes for that URL: paths like `css/style.css` stay root-relative.
-
-### Manual remote (if you created the empty repo on the web)
-
-```bash
-cd "/Users/ctang/Desktop/Sapru Lab Materials/ML PAPER/Website"
-git remote add hyper-screen-tool-io https://github.com/hyper-screen-tool/hyper-screen-tool.github.io.git
-git push -u hyper-screen-tool-io main
-```
-
----
-
-## Mirror on personal account (optional)
-
-If you also use **ctangtyy/HYPERSCREEN.github.io** (or similar) as a project site, add **`origin`** and push as needed. Project sites use **`https://ctangtyy.github.io/<repo>/`**.
+Coefficients and imputation medians are in [`assets/model/coefficients.json`](assets/model/coefficients.json).
 
 ## Local preview
 
 ```bash
+cd "/Users/ctang/Desktop/Sapru Lab Materials/ML PAPER/Website"
 python3 -m http.server 8000
 ```
 
-Then open http://localhost:8000
+Open [http://localhost:8000](http://localhost:8000). ES modules require a local server (not `file://`).
 
-## Deploy contents
+## Publish to GitHub Pages
 
-The Pages workflow copies `index.html`, `.nojekyll`, `css/`, and `assets/` into the published site. If you add other top-level folders (for example `js/` or `images/`), add them to the **Prepare static output** step in `.github/workflows/pages.yml`.
-# hyper-screen-tool
+This repo is set up for the **hyper-screen-tool** GitHub org:
+
+```bash
+gh auth login
+./scripts/publish-to-hyper-screen-tool-github-io.sh
+```
+
+Then in **hyper-screen-tool/hyper-screen-tool.github.io**: **Settings → Pages → Source: GitHub Actions**.
+
+### Manual push
+
+```bash
+git remote add hyper-screen-tool-io https://github.com/hyper-screen-tool/hyper-screen-tool.github.io.git
+git push -u hyper-screen-tool-io main
+```
+
+## Project structure
+
+```text
+.
+├── index.html              # Calculator UI
+├── css/style.css
+├── js/
+│   ├── model-config.js     # Coefficients, medians, labels
+│   ├── calculator.js       # Scoring logic
+│   └── app.js              # Form + results UI
+├── assets/model/
+│   └── coefficients.json   # Machine-readable model spec
+└── .github/workflows/
+    └── pages.yml           # GitHub Pages deploy
+```
+
+## Clinical disclaimer
+
+HYPER-SCREEN is a **research decision-support tool**, not a substitute for clinical judgment. For screening enrichment and research use only.
+
+## Citation
+
+If you use this tool, please cite the associated Sapru Lab manuscript when available.

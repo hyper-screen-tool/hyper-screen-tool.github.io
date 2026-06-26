@@ -1,0 +1,61 @@
+{
+  "model": "HYPER-SCREEN elastic-net penalized logistic regression",
+  "derivation_cohorts": ["cafpint", "pali", "redvent"],
+  "classification_threshold": 0.7,
+  "hyperparameters": {
+    "alpha": 0.15,
+    "lambda": "lambda.min",
+    "class_weight": 5.5,
+    "nfolds": 10,
+    "seed": 0
+  },
+  "imputation": "median across combined development dataset",
+  "intercept": 5.189443052,
+  "coefficients": {
+    "pelodwbc": -0.027438479,
+    "pelodplate": -0.003902611,
+    "pelodpt": 0.05942611,
+    "pelodhr": 0.007488262,
+    "pelodlact": 0.139285208,
+    "prismpao2lo": 0.00008363838,
+    "prismbunhi": 0.036418063,
+    "prismph": -1.976261744,
+    "prismtemphi": 0.166403768,
+    "prismgluc": -0.001231965,
+    "intub": 0.596276818,
+    "wt": 0.003789397,
+    "male": 0.494628898,
+    "vaso": 0.242866002,
+    "prisminpt": 0.256779509,
+    "prismpostop": -0.473277389,
+    "prismprevadm": 0.104518212,
+    "prismcancer": 0.717790557,
+    "prismnonop": 0.758573525
+  },
+  "imputation_medians": {
+    "pelodwbc": 7.9,
+    "pelodplate": 128,
+    "pelodpt": 16.1,
+    "pelodhr": 148,
+    "pelodlact": 2,
+    "prismpao2lo": 63.2,
+    "prismbunhi": 13,
+    "prismph": 7.32,
+    "prismtemphi": 38,
+    "prismgluc": 155,
+    "intub": 1,
+    "wt": 19.5,
+    "male": 1,
+    "vaso": 1,
+    "prisminpt": 0,
+    "prismpostop": 0,
+    "prismprevadm": 0,
+    "prismcancer": 0,
+    "prismnonop": 0
+  },
+  "notes": [
+    "bicarb was retained by stepwise selection but penalized to zero at lambda.min and is excluded from scoring.",
+    "Class 1 = hyperinflammatory; class 0 = hypoinflammatory.",
+    "Source: Clove OG Model Final Boss classifier_coefficients_clove model.csv"
+  ]
+}
