@@ -101,23 +101,6 @@ a {
   font-size: 1.02rem;
 }
 
-.header-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: flex-end;
-}
-
-.meta-chip {
-  padding: 0.45rem 0.8rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--bg-elevated);
-  color: var(--ink-muted);
-  font-size: 0.82rem;
-  font-weight: 500;
-}
-
 .app-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.85fr);
