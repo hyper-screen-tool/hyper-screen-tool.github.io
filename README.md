@@ -24,32 +24,6 @@ Web calculator for the pediatric critical care **hyperinflammatory vs hypoinflam
 
 Coefficients match `classifier_coefficients_clove model.csv` from the stepwise → elastic-net validation pipeline and are stored in [`assets/model/coefficients.json`](assets/model/coefficients.json).
 
-## Local preview
-
-```bash
-cd "/Users/ctang/Desktop/Sapru Lab Materials/ML PAPER/Website"
-python3 -m http.server 8000
-```
-
-Open [http://localhost:8000](http://localhost:8000). ES modules require a local server (not `file://`).
-
-## Publish to GitHub Pages
-
-This repo is set up for the **hyper-screen-tool** GitHub org:
-
-```bash
-gh auth login
-./scripts/publish-to-hyper-screen-tool-github-io.sh
-```
-
-Then in **hyper-screen-tool/hyper-screen-tool.github.io**: **Settings → Pages → Source: GitHub Actions**.
-
-### Manual push
-
-```bash
-git remote add hyper-screen-tool-io https://github.com/hyper-screen-tool/hyper-screen-tool.github.io.git
-git push -u hyper-screen-tool-io main
-```
 
 ## Project structure
 
