@@ -22,7 +22,6 @@ Web calculator for the pediatric critical care **hyperinflammatory vs hypoinflam
 | Classification threshold | 0.70 |
 | Missing data | Median imputation |
 
-Coefficients match `classifier_coefficients_clove model.csv` from the stepwise → elastic-net validation pipeline and are stored in [`assets/model/coefficients.json`](assets/model/coefficients.json).
 
 
 ## Project structure
