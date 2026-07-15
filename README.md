@@ -20,7 +20,7 @@ Web calculator for the pediatric critical care **hyperinflammatory vs hypoinflam
 | Elastic-net α | 0.15 |
 | Positive-class weight | 5.5 |
 | Classification threshold | 0.70 |
-| Missing data | Median imputation |
+| Missing data | Normal reference imputation for PRISM-III (Pollack et al, 1996) and PELOD-2 (Leteurtre et al, 2003) Variables |
 
 
 
