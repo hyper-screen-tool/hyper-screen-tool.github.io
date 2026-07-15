@@ -16,7 +16,7 @@ Web calculator for the pediatric critical care **hyperinflammatory vs hypoinflam
 | Setting | Value |
 | --- | ---: |
 | Derivation cohorts | CAFPINT, PALI, REDVENT |
-| Predictors (non-zero at λ<sub>min</sub>) | 19 |
+| Predictors (non-zero at λ<sub>min</sub>) | 18 |
 | Elastic-net α | 0.15 |
 | Positive-class weight | 5.5 |
 | Classification threshold | 0.70 |
