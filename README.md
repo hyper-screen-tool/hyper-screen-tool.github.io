@@ -8,8 +8,8 @@ Web calculator for the pediatric critical care **hyperinflammatory vs hypoinflam
 
 - Implements the **elastic-net penalized logistic regression** model trained on **CAFPINT, PALI, and REDVENT**
 - Uses the published **lambda.min coefficients** and **0.70 classification threshold**
-- Supports **missing inputs** via median imputation (same strategy as model development)
-- Runs entirely in the browser — no patient data is sent to a server
+- Supports **missing inputs** via normal reference imputation (same strategy as model development)
+- Runs entirely in the browser — no patient data is sent to a server, ensuring patient data is private
 
 ## Model summary
 
