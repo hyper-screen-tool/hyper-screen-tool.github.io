@@ -418,19 +418,6 @@ a {
   border: 1px solid #cfe4ec;
 }
 
-.calibrated-card {
-  background: linear-gradient(180deg, #fbfaf7, #f5f1e8);
-  border-color: #e2d9c8;
-}
-
-.calibrated-card .probability-label {
-  color: #6b5a3e;
-}
-
-.calibrated-value {
-  font-size: 2rem;
-}
-
 .probability-label {
   margin: 0;
   font-size: 0.8rem;

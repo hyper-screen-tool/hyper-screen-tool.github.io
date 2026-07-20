@@ -80,8 +80,7 @@
           <div class="panel-header">
             <h2>Prediction</h2>
             <p>
-              Classification uses the raw risk score. A Platt-recalibrated
-              probability is also shown for absolute-risk interpretation.
+              Classification uses the risk score with a threshold of 0.70.
             </p>
           </div>
 
@@ -92,19 +91,9 @@
 
           <div class="result-content" id="result-content" hidden>
             <div class="probability-card">
-              <p class="probability-label">Risk score (raw)</p>
+              <p class="probability-label">Risk score</p>
               <p class="probability-value" id="probability-value">—</p>
               <p class="threshold-note" id="threshold-note"></p>
-            </div>
-
-            <div class="probability-card calibrated-card">
-              <p class="probability-label">Calibrated probability</p>
-              <p class="probability-value calibrated-value" id="calibrated-value">—</p>
-              <p class="score-scale-note" id="calibrated-note">
-                Estimated % chance this individual is hyperinflammatory
-                (Platt-recalibrated value of the raw risk score from the
-                weighted model). Not used for the ≥ 0.70 classification cut.
-              </p>
             </div>
 
             <div
@@ -142,15 +131,11 @@
             and positive-class weight = 5.5.
           </p>
           <p>
-            The displayed <strong>risk score</strong> is raw model output on the
+            The displayed <strong>risk score</strong> is model output on the
             weighted training scale (class weight 5.5). Patients with score
             <strong>≥ 0.70</strong> are classified
             <strong>hyperinflammatory</strong>; values below 0.70 are
-            <strong>hypoinflammatory</strong>. A separate
-            <strong>Platt-recalibrated probability</strong> is shown for
-            absolute-risk interpretation because class weighting shifts the raw
-            score scale; that calibrated value is <em>not</em> used for the
-            bedside threshold.
+            <strong>hypoinflammatory</strong>.
           </p>
           <p>
             <a

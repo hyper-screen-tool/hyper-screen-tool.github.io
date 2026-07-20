@@ -3,7 +3,6 @@ import { TEST_CASES } from "./test-cases.js";
 import {
   predict,
   formatRiskScore,
-  formatCalibratedProbability,
   classificationLabel,
 } from "./calculator.js";
 
@@ -12,7 +11,6 @@ const resultPanel = document.getElementById("result-panel");
 const resultPlaceholder = document.getElementById("result-placeholder");
 const resultContent = document.getElementById("result-content");
 const probabilityValue = document.getElementById("probability-value");
-const calibratedValue = document.getElementById("calibrated-value");
 const classificationBadge = document.getElementById("classification-badge");
 const thresholdNote = document.getElementById("threshold-note");
 const imputedList = document.getElementById("imputed-list");
@@ -441,12 +439,7 @@ function runCalculation() {
   resultPanel.classList.add("has-result");
 
   probabilityValue.textContent = formatRiskScore(result.riskScore);
-  if (calibratedValue) {
-    calibratedValue.textContent = formatCalibratedProbability(
-      result.calibratedProbability
-    );
-  }
-  thresholdNote.textContent = `Classify hyperinflammatory if risk score ≥ ${MODEL.threshold.toFixed(2)} (raw score; not the calibrated %)`;
+  thresholdNote.textContent = `Classify hyperinflammatory if risk score ≥ ${MODEL.threshold.toFixed(2)}`;
 
   classificationBadge.textContent = classificationLabel(result.classification);
   classificationBadge.className = `classification-badge is-${result.classification}`;

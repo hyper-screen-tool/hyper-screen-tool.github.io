@@ -1,16 +1,14 @@
 {
   "model": "HYPER-SCREEN 19-feature elastic-net (primary midpoint imputation)",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "output_label": "risk_score",
-  "output_note": "Raw weighted-model output (class_weight 5.5) is the operating risk score. Platt-recalibrated probability is shown for absolute-risk interpretation only; classification uses raw score ≥ 0.70.",
+  "output_note": "Model output on the weighted training scale (class_weight 5.5). Classification uses risk score \u2265 0.70.",
   "classification_threshold": 0.7,
-  "platt_recalibration": {
-    "intercept": -1.7418874273,
-    "slope": 1.2514909806,
-    "fit_source": "derivation in-sample predictions (CAF-PINT + PALI + REDVENT) using these website coefficients",
-    "formula": "calibrated = sigmoid(intercept + slope * logit(raw_risk_score))"
-  },
-  "derivation_cohorts": ["cafpint", "pali", "redvent"],
+  "derivation_cohorts": [
+    "cafpint",
+    "pali",
+    "redvent"
+  ],
   "hyperparameters": {
     "alpha": 0.15,
     "lambda": "lambda.min",
