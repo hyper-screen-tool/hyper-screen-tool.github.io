@@ -1,0 +1,260 @@
+{
+  "test_cases": [
+    {
+      "id": "val_hyper_1",
+      "label": "Validation hyper (complete)",
+      "category": "complete",
+      "expected_probability": 0.9645,
+      "expected_result": "Hyperinflammatory",
+      "ageyrs": 5.6925188744,
+      "inputs": {
+        "pelodwbc": {
+          "value": 0.3,
+          "missing": false
+        },
+        "pelodplate": {
+          "value": 83,
+          "missing": false
+        },
+        "pelodpt": {
+          "value": 17,
+          "missing": false
+        },
+        "pelodhr": {
+          "value": 176,
+          "missing": false
+        },
+        "pelodlact": {
+          "value": 5.8,
+          "missing": false
+        },
+        "prismpao2lo": {
+          "value": 39,
+          "missing": false
+        },
+        "prismbunhi": {
+          "value": 27,
+          "missing": false
+        },
+        "prismph": {
+          "value": 7.165,
+          "missing": false
+        },
+        "prismk": {
+          "value": 3.3,
+          "missing": false
+        },
+        "prismtemphi": {
+          "value": 40.2777777778,
+          "missing": false
+        },
+        "wt": {
+          "value": 19.5,
+          "missing": false
+        },
+        "male": {
+          "value": 0,
+          "missing": false
+        },
+        "vaso": {
+          "value": 1,
+          "missing": false
+        },
+        "prisminpt": {
+          "value": 0,
+          "missing": false
+        },
+        "prismpostop": {
+          "value": 0,
+          "missing": false
+        },
+        "prismprevadm": {
+          "value": 0,
+          "missing": false
+        },
+        "prismcancer": {
+          "value": 1,
+          "missing": false
+        },
+        "prismnonop": {
+          "value": 0,
+          "missing": false
+        },
+        "bicarb": {
+          "value": 23,
+          "missing": false
+        }
+      }
+    },
+    {
+      "id": "val_hypo_1",
+      "label": "Validation hypo (complete)",
+      "category": "complete",
+      "expected_probability": 0.5825,
+      "expected_result": "Hypoinflammatory",
+      "ageyrs": 5.6925188744,
+      "inputs": {
+        "pelodwbc": {
+          "value": 6.6,
+          "missing": false
+        },
+        "pelodplate": {
+          "value": 58,
+          "missing": false
+        },
+        "pelodpt": {
+          "value": 16.5,
+          "missing": false
+        },
+        "pelodhr": {
+          "value": 98,
+          "missing": false
+        },
+        "pelodlact": {
+          "value": 0.8,
+          "missing": false
+        },
+        "prismpao2lo": {
+          "value": 94.1,
+          "missing": false
+        },
+        "prismbunhi": {
+          "value": 9,
+          "missing": false
+        },
+        "prismph": {
+          "value": 7.319,
+          "missing": false
+        },
+        "prismk": {
+          "value": 3.2,
+          "missing": false
+        },
+        "prismtemphi": {
+          "value": 37.7777777778,
+          "missing": false
+        },
+        "wt": {
+          "value": 19.5,
+          "missing": false
+        },
+        "male": {
+          "value": 0,
+          "missing": false
+        },
+        "vaso": {
+          "value": 1,
+          "missing": false
+        },
+        "prisminpt": {
+          "value": 0,
+          "missing": false
+        },
+        "prismpostop": {
+          "value": 0,
+          "missing": false
+        },
+        "prismprevadm": {
+          "value": 0,
+          "missing": false
+        },
+        "prismcancer": {
+          "value": 0,
+          "missing": false
+        },
+        "prismnonop": {
+          "value": 0,
+          "missing": false
+        },
+        "bicarb": {
+          "value": 25,
+          "missing": false
+        }
+      }
+    },
+    {
+      "id": "val_missing_lact_ph",
+      "label": "Validation hyper — lactate & pH imputed",
+      "category": "missing",
+      "expected_probability": 0.9502,
+      "expected_result": "Hyperinflammatory",
+      "ageyrs": "NA",
+      "inputs": {
+        "pelodwbc": {
+          "value": 1.4,
+          "missing": false
+        },
+        "pelodplate": {
+          "value": 7,
+          "missing": false
+        },
+        "pelodpt": {
+          "value": 17.5,
+          "missing": false
+        },
+        "pelodhr": {
+          "value": 196,
+          "missing": false
+        },
+        "pelodlact": {
+          "missing": true
+        },
+        "prismpao2lo": {
+          "value": 33,
+          "missing": false
+        },
+        "prismbunhi": {
+          "value": 33,
+          "missing": false
+        },
+        "prismph": {
+          "missing": true
+        },
+        "prismk": {
+          "value": 3.6,
+          "missing": false
+        },
+        "prismtemphi": {
+          "value": 38.2222222222,
+          "missing": false
+        },
+        "wt": {
+          "value": 19.5,
+          "missing": false
+        },
+        "male": {
+          "value": 0,
+          "missing": false
+        },
+        "vaso": {
+          "value": 1,
+          "missing": false
+        },
+        "prisminpt": {
+          "value": 0,
+          "missing": false
+        },
+        "prismpostop": {
+          "value": 0,
+          "missing": false
+        },
+        "prismprevadm": {
+          "value": 0,
+          "missing": false
+        },
+        "prismcancer": {
+          "value": 1,
+          "missing": false
+        },
+        "prismnonop": {
+          "value": 0,
+          "missing": false
+        },
+        "bicarb": {
+          "value": 20,
+          "missing": false
+        }
+      }
+    }
+  ]
+}

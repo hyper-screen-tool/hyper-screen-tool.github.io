@@ -1,4 +1,5 @@
 import { MODEL } from "./model-config.js";
+import { imputeValue } from "./imputation.js";
 
 function sigmoid(logit) {
   if (logit >= 0) {
@@ -11,16 +12,19 @@ function sigmoid(logit) {
 
 /**
  * @param {Record<string, { value: number, imputed: boolean }>} inputs
+ * @param {number | null | undefined} ageYears
  */
-export function predict(inputs) {
+export function predict(inputs, ageYears = null) {
   let logit = MODEL.intercept;
   const contributions = [];
   const imputedFields = [];
 
   for (const predictor of MODEL.predictors) {
     const entry = inputs[predictor.id];
-    const value = entry?.value ?? predictor.median;
     const imputed = entry?.imputed ?? true;
+    const value = imputed
+      ? imputeValue(predictor, ageYears)
+      : (entry?.value ?? imputeValue(predictor, ageYears));
 
     if (imputed) {
       imputedFields.push(predictor.label);
@@ -40,13 +44,17 @@ export function predict(inputs) {
     });
   }
 
-  const probability = sigmoid(logit);
+  // Raw model output on the weighted (class weight 5.5) training scale.
+  // Displayed as a risk score / decision score — not a calibrated probability.
+  const riskScore = sigmoid(logit);
   const classification =
-    probability >= MODEL.threshold ? "hyperinflammatory" : "hypoinflammatory";
+    riskScore >= MODEL.threshold ? "hyperinflammatory" : "hypoinflammatory";
 
   return {
     logit,
-    probability,
+    riskScore,
+    /** @deprecated use riskScore; kept for test compatibility */
+    probability: riskScore,
     classification,
     threshold: MODEL.threshold,
     contributions,
@@ -54,8 +62,14 @@ export function predict(inputs) {
   };
 }
 
+/** Display raw model output as a 0–1 risk score (not a percent probability). */
+export function formatRiskScore(score) {
+  return Number(score).toFixed(2);
+}
+
+/** @deprecated use formatRiskScore */
 export function formatProbability(probability) {
-  return `${(probability * 100).toFixed(1)}%`;
+  return formatRiskScore(probability);
 }
 
 export function classificationLabel(classification) {

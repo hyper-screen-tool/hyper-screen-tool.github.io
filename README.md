@@ -6,23 +6,41 @@ Web calculator for the pediatric critical care **hyperinflammatory vs hypoinflam
 
 ## What it does
 
-- Implements the **elastic-net penalized logistic regression** model trained on **CAF-PINT, PALI, and REDVENT pediatric cohorts**
-- Uses the published **lambda.min coefficients** and **0.70 predicited probability threshold** for classification
-- Supports **missing inputs** via normal reference imputation (same strategy as model development)
-- Runs entirely in the browser — no patient data is sent to a server, ensuring patient data is private
+- Implements the **elastic-net penalized logistic regression** model trained on **CAF-PINT, PALI, and REDVENT** pediatric cohorts
+- Uses the published **lambda.min coefficients** and **0.70 operating threshold** on the **raw risk score** (weighted training scale; not a calibrated probability)
+- Supports **missing inputs** via PRISM/PELOD healthy-range midpoint imputation (age-stratified where applicable) and derivation-cohort median for weight, matching the primary manuscript analysis
+- Runs entirely in the browser — no patient data is sent to a server
 
 ## Model summary
 
 | Setting | Value |
 | --- | ---: |
-| Derivation cohorts | CAFPINT, PALI, REDVENT |
-| Predictors (non-zero at λ<sub>min</sub>) | 18 |
+| Derivation cohorts | CAF-PINT, PALI, REDVENT |
+| Predictors (non-zero at λ<sub>min</sub>) | 19 |
 | Elastic-net α | 0.15 |
 | Positive-class weight | 5.5 |
-| Classification threshold | 0.70 |
-| Missing data | Normal reference imputation for PRISM-III (Pollack et al, 1996) \n and PELOD-2 (Leteurtre et al, 2003) Variables |
+| Operating threshold (raw risk score) | 0.70 |
+| Displayed output | Risk score (0–1), not calibrated probability |
+| Missing data | PRISM/PELOD midpoint imputation (+ derivation median for weight) |
 
+Coefficients match `classifier_coefficients_clove model.csv` from the stepwise → elastic-net validation pipeline and are stored in [`assets/model/coefficients.json`](assets/model/coefficients.json).
 
+## Local preview
+
+```bash
+cd "/Users/ctang/Desktop/Sapru Lab Materials/ML PAPER/Website"
+python3 -m http.server 8000
+```
+
+Open [http://localhost:8000](http://localhost:8000). ES modules require a local server (not `file://`).
+
+## Publish to GitHub Pages
+
+```bash
+./scripts/publish-to-hyper-screen-tool-github-io.sh
+```
+
+Site URL: https://hyper-screen-tool.github.io/
 
 ## Project structure
 
@@ -33,6 +51,7 @@ Web calculator for the pediatric critical care **hyperinflammatory vs hypoinflam
 ├── js/
 │   ├── model-config.js     # Coefficients, medians, labels
 │   ├── calculator.js       # Scoring logic
+│   ├── imputation.js       # PRISM/PELOD midpoint imputation
 │   └── app.js              # Form + results UI
 ├── assets/model/
 │   └── coefficients.json   # Machine-readable model spec

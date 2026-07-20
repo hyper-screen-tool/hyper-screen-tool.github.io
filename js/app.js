@@ -2,7 +2,7 @@ import { MODEL } from "./model-config.js";
 import { TEST_CASES } from "./test-cases.js";
 import {
   predict,
-  formatProbability,
+  formatRiskScore,
   classificationLabel,
 } from "./calculator.js";
 
@@ -158,6 +158,34 @@ function createBinaryField(predictor) {
 }
 
 function renderForm() {
+  const ageSection = document.createElement("section");
+  ageSection.className = "form-section";
+  const ageHeading = document.createElement("h3");
+  ageHeading.className = "form-section-title";
+  ageHeading.textContent = "Age (for imputation)";
+  const ageField = document.createElement("div");
+  ageField.className = "field";
+  ageField.innerHTML = `
+    <div class="field-label-row">
+      <label class="field-label" for="ageyrs-value">Age in years</label>
+      <span class="field-unit">years</span>
+    </div>
+    <div class="input-row">
+      <input type="number" id="ageyrs-value" name="ageyrs" class="value-input"
+        autocomplete="off" inputmode="decimal" min="0" step="0.01"
+        placeholder="Optional — defaults to child band if blank" />
+    </div>
+    <p class="field-hint">Used only to select age-stratified PRISM/PELOD midpoint imputation values.</p>
+  `;
+  ageSection.append(ageHeading, ageField);
+  form.append(ageSection);
+
+  const ageInput = document.getElementById("ageyrs-value");
+  ageInput.addEventListener("input", () => {
+    clearTestCaseBanner();
+    if (hasCalculated) runCalculation();
+  });
+
   const groups = groupPredictors();
   for (const [groupName, predictors] of groups) {
     const section = document.createElement("section");
@@ -256,13 +284,21 @@ function loadTestCase(testCaseId) {
     }
   }
 
+  const ageInput = document.getElementById("ageyrs-value");
+  if (ageInput) {
+    ageInput.value =
+      testCase.ageyrs != null && Number.isFinite(testCase.ageyrs)
+        ? String(testCase.ageyrs)
+        : "";
+  }
+
   isLoadingTestCase = false;
 
   const testCaseDetails = document.getElementById("test-case-details");
   if (testCaseDetails) testCaseDetails.open = true;
 
   testCaseBanner.hidden = false;
-  testCaseExpected.textContent = `${testCase.label} — expected ${formatProbability(testCase.expected_probability)} → ${testCase.expected_result}`;
+  testCaseExpected.textContent = `${testCase.label} — expected score ${formatRiskScore(testCase.expected_probability)} → ${testCase.expected_result}`;
   testCaseMatch.textContent = "";
   testCaseMatch.className = "test-case-match";
 
@@ -278,6 +314,13 @@ function clearTestCaseBanner() {
   testCaseMatch.className = "test-case-match";
 }
 
+function readAgeYears() {
+  const input = document.getElementById("ageyrs-value");
+  if (!input || input.value === "") return null;
+  const age = Number.parseFloat(input.value);
+  return Number.isFinite(age) ? age : null;
+}
+
 function readInputs() {
   const inputs = {};
 
@@ -287,11 +330,11 @@ function readInputs() {
       const input = document.getElementById(`${predictor.id}-value`);
       const imputed = missing.checked || input.value === "";
       const value = imputed
-        ? predictor.median
+        ? null
         : Number.parseFloat(input.value);
 
       inputs[predictor.id] = {
-        value: Number.isFinite(value) ? value : predictor.median,
+        value: Number.isFinite(value) ? value : null,
         imputed,
       };
       continue;
@@ -299,7 +342,7 @@ function readInputs() {
 
     const selected = form.querySelector(`input[name="${predictor.id}"]:checked`);
     const imputed = !selected || selected.value === "missing";
-    const value = imputed ? predictor.median : Number(selected.value);
+    const value = imputed ? null : Number(selected.value);
 
     inputs[predictor.id] = { value, imputed };
   }
@@ -352,13 +395,13 @@ function renderImputedFields(fields) {
 function evaluateTestCase(result) {
   if (!activeTestCase) return;
 
-  const probDelta = Math.abs(result.probability - activeTestCase.expected_probability);
+  const scoreDelta = Math.abs(result.riskScore - activeTestCase.expected_probability);
   const classMatch =
     classificationLabel(result.classification) === activeTestCase.expected_result;
-  const probMatch = probDelta <= 0.002;
+  const scoreMatch = scoreDelta <= 0.002;
 
-  if (classMatch && probMatch) {
-    testCaseMatch.textContent = "✓ Matches expected probability and classification";
+  if (classMatch && scoreMatch) {
+    testCaseMatch.textContent = "✓ Matches expected risk score and classification";
     testCaseMatch.className = "test-case-match is-pass";
     return;
   }
@@ -369,9 +412,9 @@ function evaluateTestCase(result) {
       `classification mismatch (got ${classificationLabel(result.classification)})`
     );
   }
-  if (!probMatch) {
+  if (!scoreMatch) {
     parts.push(
-      `probability off by ${(probDelta * 100).toFixed(2)} pp (got ${formatProbability(result.probability)})`
+      `score off by ${scoreDelta.toFixed(4)} (got ${formatRiskScore(result.riskScore)})`
     );
   }
   testCaseMatch.textContent = `✗ ${parts.join("; ")}`;
@@ -379,15 +422,15 @@ function evaluateTestCase(result) {
 }
 
 function runCalculation() {
-  const result = predict(readInputs());
+  const result = predict(readInputs(), readAgeYears());
   hasCalculated = true;
 
   resultPlaceholder.hidden = true;
   resultContent.hidden = false;
   resultPanel.classList.add("has-result");
 
-  probabilityValue.textContent = formatProbability(result.probability);
-  thresholdNote.textContent = `Classification threshold: probability ≥ ${(MODEL.threshold * 100).toFixed(0)}%`;
+  probabilityValue.textContent = formatRiskScore(result.riskScore);
+  thresholdNote.textContent = `Operating threshold: risk score ≥ ${MODEL.threshold.toFixed(2)} (raw weighted-model output; not a calibrated probability)`;
 
   classificationBadge.textContent = classificationLabel(result.classification);
   classificationBadge.className = `classification-badge is-${result.classification}`;

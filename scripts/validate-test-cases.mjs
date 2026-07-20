@@ -1,6 +1,6 @@
 import { MODEL } from "../js/model-config.js";
+import { predict } from "../js/calculator.js";
 import { TEST_CASES } from "../js/test-cases.js";
-import { predict, classificationLabel } from "../js/calculator.js";
 
 let failed = 0;
 
@@ -11,17 +11,24 @@ for (const testCase of TEST_CASES) {
       return [
         predictor.id,
         {
-          value: entry.missing ? predictor.median : entry.value,
+          value: entry.missing ? null : entry.value,
           imputed: Boolean(entry.missing),
         },
       ];
     })
   );
 
-  const result = predict(inputs);
+  const ageYears =
+    testCase.ageyrs == null || Number.isNaN(testCase.ageyrs)
+      ? null
+      : testCase.ageyrs;
+
+  const result = predict(inputs, ageYears);
   const probDelta = Math.abs(result.probability - testCase.expected_probability);
   const classOk =
-    classificationLabel(result.classification) === testCase.expected_result;
+    (result.classification === "hyperinflammatory"
+      ? "Hyperinflammatory"
+      : "Hypoinflammatory") === testCase.expected_result;
   const probOk = probDelta <= 0.002;
 
   if (classOk && probOk) {
@@ -31,7 +38,7 @@ for (const testCase of TEST_CASES) {
 
   failed += 1;
   console.error(
-    `FAIL  ${testCase.id}: prob=${result.probability.toFixed(4)} (exp ${testCase.expected_probability}), class=${classificationLabel(result.classification)} (exp ${testCase.expected_result})`
+    `FAIL  ${testCase.id}: prob=${result.probability.toFixed(4)} (exp ${testCase.expected_probability}), class mismatch=${!classOk}`
   );
 }
 

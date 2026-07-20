@@ -1,7 +1,10 @@
 {
-  "model": "HYPER-SCREEN 19-feature elastic-net (stepwise selection, lambda.min)",
-  "derivation_cohorts": ["cafpint", "pali", "redvent"],
+  "model": "HYPER-SCREEN 19-feature elastic-net (primary midpoint imputation)",
+  "version": "1.3.1",
+  "output_label": "risk_score",
+  "output_note": "Raw weighted-model output (class_weight 5.5). Operating threshold for classification; not a Platt-calibrated probability.",
   "classification_threshold": 0.7,
+  "derivation_cohorts": ["cafpint", "pali", "redvent"],
   "hyperparameters": {
     "alpha": 0.15,
     "lambda": "lambda.min",
@@ -9,54 +12,487 @@
     "nfolds": 10,
     "seed": 0
   },
-  "feature_selection": "backward stepwise on full imputed dataset, then elastic net on derivation cohorts",
-  "imputation": "median across combined development dataset",
-  "intercept": 5.189443052,
-  "coefficients": {
-    "pelodwbc": -0.027438479,
-    "pelodplate": -0.003902611,
-    "pelodpt": 0.05942611,
-    "pelodhr": 0.007488262,
-    "pelodlact": 0.139285208,
-    "prismpao2lo": 0.00008363838,
-    "prismbunhi": 0.036418063,
-    "prismph": -1.976261744,
-    "prismtemphi": 0.166403768,
-    "prismgluc": -0.001231965,
-    "intub": 0.596276818,
-    "wt": 0.003789397,
-    "male": 0.494628898,
-    "vaso": 0.242866002,
-    "prisminpt": 0.256779509,
-    "prismpostop": -0.473277389,
-    "prismprevadm": 0.104518212,
-    "prismcancer": 0.717790557,
-    "prismnonop": 0.758573525
+  "imputation": {
+    "primary": "PRISM/PELOD healthy-range midpoint (age-stratified where applicable)",
+    "non_prism": "derivation-cohort median (CAFPINT, PALI, REDVENT)"
   },
-  "imputation_medians": {
-    "pelodwbc": 7.9,
-    "pelodplate": 128,
-    "pelodpt": 16.1,
-    "pelodhr": 148,
-    "pelodlact": 2,
-    "prismpao2lo": 63.2,
-    "prismbunhi": 13,
-    "prismph": 7.32,
-    "prismtemphi": 38,
-    "prismgluc": 155,
-    "intub": 1,
-    "wt": 19.5,
-    "male": 1,
-    "vaso": 1,
-    "prisminpt": 0,
-    "prismpostop": 0,
-    "prismprevadm": 0,
-    "prismcancer": 0,
-    "prismnonop": 0
-  },
-  "notes": [
-    "bicarb was stepwise-selected but penalized to zero at lambda.min.",
-    "Source: Clove OG Model Final Boss/results/classifier_coefficients_clove model.csv",
-    "Class 1 = hyperinflammatory; class 0 = hypoinflammatory."
+  "intercept": 2.7597973105,
+  "predictors": [
+    {
+      "id": "pelodwbc",
+      "coefficient": -0.02772674404,
+      "derivationMedian": 7.5,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "pelodplate",
+      "coefficient": -0.004772682498,
+      "derivationMedian": 246.5,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "pelodpt",
+      "coefficient": 0.05304628011,
+      "derivationMedian": 16.5,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "pelodhr",
+      "coefficient": 0.0041793007958,
+      "derivationMedian": 144,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "pelodlact",
+      "coefficient": 0.12217627541,
+      "derivationMedian": 2.38,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "prismpao2lo",
+      "coefficient": 0.0002630460207,
+      "derivationMedian": 85,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "prismbunhi",
+      "coefficient": 0.037469180376,
+      "derivationMedian": 12,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "prismph",
+      "coefficient": -1.3135568955,
+      "derivationMedian": 7.35,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "prismk",
+      "coefficient": -0.085968373957,
+      "derivationMedian": 4.1,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "prismtemphi",
+      "coefficient": 0.16224720036,
+      "derivationMedian": 38,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "wt",
+      "coefficient": 0.0014817464828,
+      "derivationMedian": 19.5,
+      "imputation": "derivation_median"
+    },
+    {
+      "id": "male",
+      "coefficient": 0.25284307029,
+      "derivationMedian": 0,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "vaso",
+      "coefficient": 0.30674663986,
+      "derivationMedian": 0,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "prisminpt",
+      "coefficient": 0.28289756678,
+      "derivationMedian": 0,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "prismpostop",
+      "coefficient": -0.59108728605,
+      "derivationMedian": 0,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "prismprevadm",
+      "coefficient": 0.14484473607,
+      "derivationMedian": 0,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "prismcancer",
+      "coefficient": 0.668678466,
+      "derivationMedian": 0,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "prismnonop",
+      "coefficient": 0.97035734306,
+      "derivationMedian": 0,
+      "imputation": "prism_peleod_mid"
+    },
+    {
+      "id": "bicarb",
+      "coefficient": -0.011504416829,
+      "derivationMedian": 25,
+      "imputation": "prism_peleod_mid"
+    }
+  ],
+  "prism_peleod_lookup": [
+    {
+      "variable": "prismph",
+      "age_band": "all",
+      "normal_min": 7.28,
+      "normal_mid": 7.375,
+      "normal_max": 7.47,
+      "source": "PRISM-III"
+    },
+    {
+      "variable": "prismk",
+      "age_band": "all",
+      "normal_min": 3.5,
+      "normal_mid": 5.2,
+      "normal_max": 6.9,
+      "source": "PRISM-III"
+    },
+    {
+      "variable": "prismgluc",
+      "age_band": "all",
+      "normal_min": 80,
+      "normal_mid": 140,
+      "normal_max": 200,
+      "source": "PRISM-III"
+    },
+    {
+      "variable": "prismtemphi",
+      "age_band": "all",
+      "normal_min": 33,
+      "normal_mid": 36.5,
+      "normal_max": 40,
+      "source": "PRISM-III"
+    },
+    {
+      "variable": "prismbunhi",
+      "age_band": "neonate",
+      "normal_min": 5,
+      "normal_mid": 8.45,
+      "normal_max": 11.9,
+      "source": "PRISM-III BUN"
+    },
+    {
+      "variable": "prismbunhi",
+      "age_band": "infant",
+      "normal_min": 5,
+      "normal_mid": 9.95,
+      "normal_max": 14.9,
+      "source": "PRISM-III BUN"
+    },
+    {
+      "variable": "prismbunhi",
+      "age_band": "child",
+      "normal_min": 5,
+      "normal_mid": 9.95,
+      "normal_max": 14.9,
+      "source": "PRISM-III BUN"
+    },
+    {
+      "variable": "prismbunhi",
+      "age_band": "adolescent",
+      "normal_min": 5,
+      "normal_mid": 9.95,
+      "normal_max": 14.9,
+      "source": "PRISM-III BUN"
+    },
+    {
+      "variable": "prismcreathi",
+      "age_band": "neonate",
+      "normal_min": 0.4,
+      "normal_mid": 0.625,
+      "normal_max": 0.85,
+      "source": "PRISM-III creatinine"
+    },
+    {
+      "variable": "prismcreathi",
+      "age_band": "infant",
+      "normal_min": 0.45,
+      "normal_mid": 0.675,
+      "normal_max": 0.9,
+      "source": "PRISM-III creatinine"
+    },
+    {
+      "variable": "prismcreathi",
+      "age_band": "child",
+      "normal_min": 0.45,
+      "normal_mid": 0.675,
+      "normal_max": 0.9,
+      "source": "PRISM-III creatinine"
+    },
+    {
+      "variable": "prismcreathi",
+      "age_band": "adolescent",
+      "normal_min": 0.6,
+      "normal_mid": 0.95,
+      "normal_max": 1.3,
+      "source": "PRISM-III creatinine"
+    },
+    {
+      "variable": "prismhr",
+      "age_band": "neonate",
+      "normal_min": 100,
+      "normal_mid": 157,
+      "normal_max": 214,
+      "source": "PRISM-III HR"
+    },
+    {
+      "variable": "prismhr",
+      "age_band": "infant",
+      "normal_min": 100,
+      "normal_mid": 157,
+      "normal_max": 214,
+      "source": "PRISM-III HR"
+    },
+    {
+      "variable": "prismhr",
+      "age_band": "child",
+      "normal_min": 90,
+      "normal_mid": 137,
+      "normal_max": 184,
+      "source": "PRISM-III HR"
+    },
+    {
+      "variable": "prismhr",
+      "age_band": "adolescent",
+      "normal_min": 70,
+      "normal_mid": 107,
+      "normal_max": 144,
+      "source": "PRISM-III HR"
+    },
+    {
+      "variable": "prismsbp",
+      "age_band": "neonate",
+      "normal_min": 56,
+      "normal_mid": 78,
+      "normal_max": 100,
+      "source": "PRISM-III SBP"
+    },
+    {
+      "variable": "prismsbp",
+      "age_band": "infant",
+      "normal_min": 66,
+      "normal_mid": 85.5,
+      "normal_max": 105,
+      "source": "PRISM-III SBP"
+    },
+    {
+      "variable": "prismsbp",
+      "age_band": "child",
+      "normal_min": 76,
+      "normal_mid": 93,
+      "normal_max": 110,
+      "source": "PRISM-III SBP"
+    },
+    {
+      "variable": "prismsbp",
+      "age_band": "adolescent",
+      "normal_min": 86,
+      "normal_mid": 100.5,
+      "normal_max": 115,
+      "source": "PRISM-III SBP"
+    },
+    {
+      "variable": "prismpao2lo",
+      "age_band": "all",
+      "normal_min": 50,
+      "normal_mid": 85,
+      "normal_max": 120,
+      "source": "PRISM-III PaO2"
+    },
+    {
+      "variable": "prismpco2",
+      "age_band": "all",
+      "normal_min": 35,
+      "normal_mid": 42,
+      "normal_max": 49,
+      "source": "PRISM-III PCO2"
+    },
+    {
+      "variable": "pelodwbc",
+      "age_band": "all",
+      "normal_min": 3,
+      "normal_mid": 7.5,
+      "normal_max": 12,
+      "source": "PRISM-III WBC"
+    },
+    {
+      "variable": "pelodplate",
+      "age_band": "all",
+      "normal_min": 201,
+      "normal_mid": 275.5,
+      "normal_max": 350,
+      "source": "PRISM-III platelets"
+    },
+    {
+      "variable": "pelodpt",
+      "age_band": "all",
+      "normal_min": 11,
+      "normal_mid": 16.5,
+      "normal_max": 22,
+      "source": "PRISM-III PT"
+    },
+    {
+      "variable": "pelodlact",
+      "age_band": "all",
+      "normal_min": 0.8,
+      "normal_mid": 2.38,
+      "normal_max": 3.96,
+      "source": "PELOD-2 lactate"
+    },
+    {
+      "variable": "pelodhr",
+      "age_band": "neonate",
+      "normal_min": 100,
+      "normal_mid": 157,
+      "normal_max": 214,
+      "source": "PRISM-III HR"
+    },
+    {
+      "variable": "pelodhr",
+      "age_band": "infant",
+      "normal_min": 100,
+      "normal_mid": 157,
+      "normal_max": 214,
+      "source": "PRISM-III HR"
+    },
+    {
+      "variable": "pelodhr",
+      "age_band": "child",
+      "normal_min": 90,
+      "normal_mid": 137,
+      "normal_max": 184,
+      "source": "PRISM-III HR"
+    },
+    {
+      "variable": "pelodhr",
+      "age_band": "adolescent",
+      "normal_min": 70,
+      "normal_mid": 107,
+      "normal_max": 144,
+      "source": "PRISM-III HR"
+    },
+    {
+      "variable": "pelodsbp",
+      "age_band": "neonate",
+      "normal_min": 56,
+      "normal_mid": 78,
+      "normal_max": 100,
+      "source": "PRISM-III SBP"
+    },
+    {
+      "variable": "pelodsbp",
+      "age_band": "infant",
+      "normal_min": 66,
+      "normal_mid": 85.5,
+      "normal_max": 105,
+      "source": "PRISM-III SBP"
+    },
+    {
+      "variable": "pelodsbp",
+      "age_band": "child",
+      "normal_min": 76,
+      "normal_mid": 93,
+      "normal_max": 110,
+      "source": "PRISM-III SBP"
+    },
+    {
+      "variable": "pelodsbp",
+      "age_band": "adolescent",
+      "normal_min": 86,
+      "normal_mid": 100.5,
+      "normal_max": 115,
+      "source": "PRISM-III SBP"
+    },
+    {
+      "variable": "bicarb",
+      "age_band": "all",
+      "normal_min": 22,
+      "normal_mid": 25,
+      "normal_max": 28,
+      "source": "clinical bicarbonate"
+    },
+    {
+      "variable": "intub",
+      "age_band": "all",
+      "normal_min": 0,
+      "normal_mid": 0,
+      "normal_max": 0,
+      "source": "binary absent=normal"
+    },
+    {
+      "variable": "vaso",
+      "age_band": "all",
+      "normal_min": 0,
+      "normal_mid": 0,
+      "normal_max": 0,
+      "source": "binary absent=normal"
+    },
+    {
+      "variable": "male",
+      "age_band": "all",
+      "normal_min": 0,
+      "normal_mid": 0,
+      "normal_max": 0,
+      "source": "binary absent=normal"
+    },
+    {
+      "variable": "prisminpt",
+      "age_band": "all",
+      "normal_min": 0,
+      "normal_mid": 0,
+      "normal_max": 0,
+      "source": "binary absent=normal"
+    },
+    {
+      "variable": "prismpostop",
+      "age_band": "all",
+      "normal_min": 0,
+      "normal_mid": 0,
+      "normal_max": 0,
+      "source": "binary absent=normal"
+    },
+    {
+      "variable": "prismprevadm",
+      "age_band": "all",
+      "normal_min": 0,
+      "normal_mid": 0,
+      "normal_max": 0,
+      "source": "binary absent=normal"
+    },
+    {
+      "variable": "prismcancer",
+      "age_band": "all",
+      "normal_min": 0,
+      "normal_mid": 0,
+      "normal_max": 0,
+      "source": "binary absent=normal"
+    },
+    {
+      "variable": "prismnonop",
+      "age_band": "all",
+      "normal_min": 0,
+      "normal_mid": 0,
+      "normal_max": 0,
+      "source": "binary absent=normal"
+    },
+    {
+      "variable": "prismcpr",
+      "age_band": "all",
+      "normal_min": 0,
+      "normal_mid": 0,
+      "normal_max": 0,
+      "source": "binary absent=normal"
+    },
+    {
+      "variable": "prismchrabn",
+      "age_band": "all",
+      "normal_min": 0,
+      "normal_mid": 0,
+      "normal_max": 0,
+      "source": "binary absent=normal"
+    }
   ]
 }

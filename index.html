@@ -38,7 +38,9 @@
             <p>
               Enter available PRISM-III, PELOD-2, and demographic variables.
               Check <strong>Missing</strong> or leave a field blank to impute
-              with the development-cohort median.
+              missing PRISM/PELOD values with published healthy-range midpoints
+              (age-stratified where applicable) and weight with the derivation-cohort
+              median, consistent with the primary analysis.
             </p>
           </div>
 
@@ -77,7 +79,10 @@
         <aside class="panel result-panel" id="result-panel" aria-live="polite">
           <div class="panel-header">
             <h2>Prediction</h2>
-            <p>Probability of hyperinflammatory subphenotype membership.</p>
+            <p>
+              Raw model risk score for hyperinflammatory class assignment
+              (operating threshold, not a calibrated probability).
+            </p>
           </div>
 
           <div class="result-placeholder" id="result-placeholder">
@@ -87,9 +92,13 @@
 
           <div class="result-content" id="result-content" hidden>
             <div class="probability-card">
-              <p class="probability-label">Predicted probability</p>
+              <p class="probability-label">Risk score</p>
               <p class="probability-value" id="probability-value">—</p>
               <p class="threshold-note" id="threshold-note"></p>
+              <p class="score-scale-note">
+                Score ranges from 0–1 on the model’s training scale (class weight
+                5.5). Classification uses the raw score; it is not Platt-recalibrated.
+              </p>
             </div>
 
             <div
@@ -120,16 +129,21 @@
         <article class="info-card">
           <h2 id="about-heading">About the model</h2>
           <p>
-            This tool implements the 19-feature elastic-net penalized logistic
-            regression model used for external validation. Predictors were
-            selected by backward stepwise regression, then the model was trained
+            This tool implements the elastic-net penalized logistic regression
+            model used for external validation. Candidate predictors underwent
+            backward stepwise selection, after which the model was trained
             on three derivation cohorts (CAFPINT, PALI, REDVENT) with α = 0.15
             and positive-class weight = 5.5.
           </p>
           <p>
-            Patients with predicted probability <strong>≥ 0.70</strong> are
-            classified as <strong>hyperinflammatory</strong>; values below
-            0.70 are classified as <strong>hypoinflammatory</strong>.
+            The displayed value is a <strong>risk score</strong> (raw model
+            output on the weighted training scale), not a calibrated
+            probability. Patients with score <strong>≥ 0.70</strong> are
+            classified <strong>hyperinflammatory</strong>; values below 0.70 are
+            <strong>hypoinflammatory</strong>. In the manuscript, Platt
+            recalibration was used for absolute calibration metrics because
+            class weighting shifts the raw score scale; the bedside threshold
+            remains on the raw score.
           </p>
           <p>
             <a
@@ -146,10 +160,11 @@
         <article class="info-card">
           <h2>Missing data</h2>
           <p>
-            Missing predictors are replaced with the median value from the
-            combined development dataset, matching the imputation strategy used
-            during model training. Imputed fields are listed in the results
-            panel.
+            Missing PRISM/PELOD physiology values are imputed using published
+            healthy-range midpoints (age-stratified where applicable). Weight
+            and other non-PRISM predictors use derivation-cohort medians,
+            matching the primary manuscript analysis. Imputed fields are listed
+            in the results panel.
           </p>
           <p>
             Model coefficients are available in

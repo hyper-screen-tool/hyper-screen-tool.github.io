@@ -252,6 +252,13 @@ a {
   white-space: nowrap;
 }
 
+.field-hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  line-height: 1.35;
+}
+
 .input-row {
   display: flex;
   gap: 0.65rem;
@@ -427,6 +434,13 @@ a {
   line-height: 1.1;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
+}
+
+.score-scale-note {
+  margin: 0.65rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--muted, #5c6570);
 }
 
 .threshold-note {
