@@ -66,7 +66,7 @@ export const TEST_CASES = [
     category: "missing",
     expected_probability: 0.9502,
     expected_result: "Hyperinflammatory",
-    ageyrs: null,
+    ageyrs: 5.6925188744,
     inputs: {
       pelodwbc: { value: 1.4, missing: false },
       pelodplate: { value: 7, missing: false },

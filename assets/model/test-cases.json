@@ -178,7 +178,7 @@
       "category": "missing",
       "expected_probability": 0.9502,
       "expected_result": "Hyperinflammatory",
-      "ageyrs": "NA",
+      "ageyrs": 5.6925188744,
       "inputs": {
         "pelodwbc": {
           "value": 1.4,

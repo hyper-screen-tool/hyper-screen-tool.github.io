@@ -164,7 +164,7 @@ function renderForm() {
   ageSection.className = "form-section";
   const ageHeading = document.createElement("h3");
   ageHeading.className = "form-section-title";
-  ageHeading.textContent = "Age (for imputation)";
+  ageHeading.textContent = "Age";
   const ageField = document.createElement("div");
   ageField.className = "field";
   ageField.innerHTML = `
@@ -175,9 +175,8 @@ function renderForm() {
     <div class="input-row">
       <input type="number" id="ageyrs-value" name="ageyrs" class="value-input"
         autocomplete="off" inputmode="decimal" min="0" step="0.01"
-        placeholder="Optional — defaults to child band if blank" />
+        placeholder="Required" required />
     </div>
-    <p class="field-hint">Used only to select age-stratified PRISM/PELOD midpoint imputation values.</p>
   `;
   ageSection.append(ageHeading, ageField);
   form.append(ageSection);
@@ -424,7 +423,17 @@ function evaluateTestCase(result) {
 }
 
 function runCalculation() {
-  const result = predict(readInputs(), readAgeYears());
+  const ageYears = readAgeYears();
+  if (ageYears == null) {
+    const ageInput = document.getElementById("ageyrs-value");
+    if (ageInput) {
+      ageInput.focus();
+      ageInput.reportValidity?.();
+    }
+    return;
+  }
+
+  const result = predict(readInputs(), ageYears);
   hasCalculated = true;
 
   resultPlaceholder.hidden = true;
