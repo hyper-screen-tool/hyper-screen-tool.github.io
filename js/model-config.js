@@ -5,10 +5,18 @@
  */
 export const MODEL = {
   name: "HYPER-SCREEN",
-  version: "1.3.1",
+  version: "1.4.0",
   threshold: 0.7,
   outputLabel: "risk_score",
   intercept: 2.75979731054851,
+  // Platt recalibration: fit on derivation in-sample predictions using these
+  // exact website coefficients (class weight 5.5). Applied per patient for
+  // absolute-probability display only — classification still uses raw score.
+  platt: {
+    intercept: -1.7418874273,
+    slope: 1.2514909806,
+    fitSource: "derivation in-sample (CAF-PINT + PALI + REDVENT)",
+  },
   derivationCohorts: ["CAFPINT", "PALI", "REDVENT"],
   hyperparameters: {
     alpha: 0.15,

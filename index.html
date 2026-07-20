@@ -80,8 +80,8 @@
           <div class="panel-header">
             <h2>Prediction</h2>
             <p>
-              Raw model risk score for hyperinflammatory class assignment
-              (operating threshold, not a calibrated probability).
+              Classification uses the raw risk score. A Platt-recalibrated
+              probability is also shown for absolute-risk interpretation.
             </p>
           </div>
 
@@ -92,12 +92,18 @@
 
           <div class="result-content" id="result-content" hidden>
             <div class="probability-card">
-              <p class="probability-label">Risk score</p>
+              <p class="probability-label">Risk score (raw)</p>
               <p class="probability-value" id="probability-value">—</p>
               <p class="threshold-note" id="threshold-note"></p>
-              <p class="score-scale-note">
-                Score ranges from 0–1 on the model’s training scale (class weight
-                5.5). Classification uses the raw score; it is not Platt-recalibrated.
+            </div>
+
+            <div class="probability-card calibrated-card">
+              <p class="probability-label">Calibrated probability</p>
+              <p class="probability-value calibrated-value" id="calibrated-value">—</p>
+              <p class="score-scale-note" id="calibrated-note">
+                Platt recalibration of the weighted-model score (fit on
+                derivation). For absolute-risk interpretation only — not used for
+                the ≥ 0.70 classification cut.
               </p>
             </div>
 
@@ -136,14 +142,15 @@
             and positive-class weight = 5.5.
           </p>
           <p>
-            The displayed value is a <strong>risk score</strong> (raw model
-            output on the weighted training scale), not a calibrated
-            probability. Patients with score <strong>≥ 0.70</strong> are
-            classified <strong>hyperinflammatory</strong>; values below 0.70 are
-            <strong>hypoinflammatory</strong>. In the manuscript, Platt
-            recalibration was used for absolute calibration metrics because
-            class weighting shifts the raw score scale; the bedside threshold
-            remains on the raw score.
+            The displayed <strong>risk score</strong> is raw model output on the
+            weighted training scale (class weight 5.5). Patients with score
+            <strong>≥ 0.70</strong> are classified
+            <strong>hyperinflammatory</strong>; values below 0.70 are
+            <strong>hypoinflammatory</strong>. A separate
+            <strong>Platt-recalibrated probability</strong> is shown for
+            absolute-risk interpretation because class weighting shifts the raw
+            score scale; that calibrated value is <em>not</em> used for the
+            bedside threshold.
           </p>
           <p>
             <a

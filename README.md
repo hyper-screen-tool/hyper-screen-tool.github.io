@@ -20,7 +20,8 @@ Web calculator for the pediatric critical care **hyperinflammatory vs hypoinflam
 | Elastic-net α | 0.15 |
 | Positive-class weight | 5.5 |
 | Operating threshold (raw risk score) | 0.70 |
-| Displayed output | Risk score (0–1), not calibrated probability |
+| Displayed output | Risk score (0–1) + Platt-calibrated probability |
+| Platt intercept / slope | −1.7419 / 1.2515 (derivation in-sample) |
 | Missing data | PRISM/PELOD midpoint imputation (+ derivation median for weight) |
 
 Coefficients match `classifier_coefficients_clove model.csv` from the stepwise → elastic-net validation pipeline and are stored in [`assets/model/coefficients.json`](assets/model/coefficients.json).
