@@ -175,7 +175,7 @@ function renderForm() {
         autocomplete="off" inputmode="decimal" min="0" step="0.01"
         placeholder="Required" required />
     </div>
-    <p class="field-hint">Used only to choose age-appropriate normal values when heart rate or BUN is missing.</p>
+    <p class="field-hint">Used only to choose age-appropriate normal values when clinical values are missing.</p>
   `;
   ageSection.append(ageHeading, ageField);
   form.append(ageSection);
