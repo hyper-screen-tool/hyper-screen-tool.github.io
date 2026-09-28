@@ -1,14 +1,10 @@
 {
-  "model": "HYPER-SCREEN 19-feature elastic-net (primary midpoint imputation)",
-  "version": "1.5.0",
+  "model": "HYPER-SCREEN locked 18-predictor elastic-net (primary midpoint imputation)",
+  "version": "2.0.0",
   "output_label": "risk_score",
-  "output_note": "Model output on the weighted training scale (class_weight 5.5). Classification uses risk score \u2265 0.70.",
+  "output_note": "Model output on the weighted training scale (class_weight 5.5). Classification uses risk score >= 0.70.",
   "classification_threshold": 0.7,
-  "derivation_cohorts": [
-    "cafpint",
-    "pali",
-    "redvent"
-  ],
+  "derivation_cohorts": ["cafpint", "pali", "redvent"],
   "hyperparameters": {
     "alpha": 0.15,
     "lambda": "lambda.min",
@@ -20,119 +16,113 @@
     "primary": "PRISM/PELOD healthy-range midpoint (age-stratified where applicable)",
     "non_prism": "derivation-cohort median (CAFPINT, PALI, REDVENT)"
   },
-  "intercept": 2.7597973105,
+  "intercept": 3.1099542873,
   "predictors": [
     {
       "id": "pelodwbc",
-      "coefficient": -0.02772674404,
+      "coefficient": -0.027840645251,
       "derivationMedian": 7.5,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "pelodplate",
-      "coefficient": -0.004772682498,
+      "coefficient": -0.0048082163746,
       "derivationMedian": 246.5,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "pelodpt",
-      "coefficient": 0.05304628011,
+      "coefficient": 0.054725102557,
       "derivationMedian": 16.5,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "pelodhr",
-      "coefficient": 0.0041793007958,
+      "coefficient": 0.0042030301508,
       "derivationMedian": 144,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "pelodlact",
-      "coefficient": 0.12217627541,
+      "coefficient": 0.12834415842,
       "derivationMedian": 2.38,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "prismpao2lo",
-      "coefficient": 0.0002630460207,
+      "coefficient": 0.00025787485482,
       "derivationMedian": 85,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "prismbunhi",
-      "coefficient": 0.037469180376,
+      "coefficient": 0.0384552635,
       "derivationMedian": 12,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "prismph",
-      "coefficient": -1.3135568955,
+      "coefficient": -1.3053510437,
       "derivationMedian": 7.35,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "prismk",
-      "coefficient": -0.085968373957,
+      "coefficient": -0.082205517004,
       "derivationMedian": 4.1,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "prismtemphi",
-      "coefficient": 0.16224720036,
+      "coefficient": 0.15000776251,
       "derivationMedian": 38,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "wt",
-      "coefficient": 0.0014817464828,
+      "coefficient": 0.0012136332675,
       "derivationMedian": 19.5,
       "imputation": "derivation_median"
     },
     {
       "id": "male",
-      "coefficient": 0.25284307029,
+      "coefficient": 0.27471142545,
       "derivationMedian": 0,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "vaso",
-      "coefficient": 0.30674663986,
+      "coefficient": 0.33205469147,
       "derivationMedian": 0,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "prisminpt",
-      "coefficient": 0.28289756678,
+      "coefficient": 0.28495875631,
       "derivationMedian": 0,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "prismpostop",
-      "coefficient": -0.59108728605,
+      "coefficient": -0.61202648001,
       "derivationMedian": 0,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "prismprevadm",
-      "coefficient": 0.14484473607,
+      "coefficient": 0.13918431314,
       "derivationMedian": 0,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "prismcancer",
-      "coefficient": 0.668678466,
-      "derivationMedian": 0,
-      "imputation": "prism_peleod_mid"
-    },
-    {
-      "id": "prismnonop",
-      "coefficient": 0.97035734306,
+      "coefficient": 0.68078964664,
       "derivationMedian": 0,
       "imputation": "prism_peleod_mid"
     },
     {
       "id": "bicarb",
-      "coefficient": -0.011504416829,
+      "coefficient": -0.012140915089,
       "derivationMedian": 25,
       "imputation": "prism_peleod_mid"
     }

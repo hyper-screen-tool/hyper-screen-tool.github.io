@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="HYPER-SCREEN: pediatric critical care inflammatory subphenotype classifier using PRISM-III and PELOD-2 variables."
+      content="HYPER-SCREEN: pediatric critical care inflammatory subphenotype classifier using 18 PRISM-III, PELOD, clinical, and demographic variables."
     />
     <title>HYPER-SCREEN | Inflammatory Subphenotype Classifier</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -36,8 +36,8 @@
           <div class="panel-header">
             <h2 id="inputs-heading">Patient inputs</h2>
             <p>
-              Enter age and available PRISM-III, PELOD-2, and demographic
-              variables. Check <strong>Missing</strong> or leave a clinical field
+              Enter age and available PRISM-III, PELOD, clinical
+              characteristic, and demographic variables. Check <strong>Missing</strong> or leave a clinical field
               blank to impute missing PRISM/PELOD values with published
               healthy-range midpoints and weight with the derivation-cohort
               median, consistent with the primary analysis.
@@ -128,7 +128,9 @@
             model used for external validation. Candidate predictors underwent
             backward stepwise selection, after which the model was trained
             on three derivation cohorts (CAFPINT, PALI, REDVENT) with α = 0.15
-            and positive-class weight = 5.5.
+            and positive-class weight = 5.5. The locked model uses 18
+            predictors: PRISM-III physiology, PELOD physiology, clinical
+            characteristics, and demographics.
           </p>
           <p>
             The displayed <strong>risk score</strong> is model output on the

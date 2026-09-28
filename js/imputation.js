@@ -26,7 +26,6 @@ const LOOKUP = [
   { variable: "prismpostop", age_band: "all", normal_mid: 0 },
   { variable: "prismprevadm", age_band: "all", normal_mid: 0 },
   { variable: "prismcancer", age_band: "all", normal_mid: 0 },
-  { variable: "prismnonop", age_band: "all", normal_mid: 0 },
 ];
 
 const LOOKUP_BY_VAR = LOOKUP.reduce((acc, row) => {

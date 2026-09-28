@@ -16,14 +16,21 @@ Web calculator for the pediatric critical care **hyperinflammatory vs hypoinflam
 | Setting | Value |
 | --- | ---: |
 | Derivation cohorts | CAF-PINT, PALI, REDVENT |
-| Predictors (non-zero at λ<sub>min</sub>) | 19 |
+| Predictors (non-zero at λ<sub>min</sub>) | 18 (locked model) |
 | Elastic-net α | 0.15 |
 | Positive-class weight | 5.5 |
 | Operating threshold (risk score) | 0.70 |
 | Displayed output | Risk score (0–1) |
 | Missing data | PRISM/PELOD midpoint imputation (+ derivation median for weight) |
 
-Coefficients match `classifier_coefficients_clove model.csv` from the stepwise → elastic-net validation pipeline and are stored in [`assets/model/coefficients.json`](assets/model/coefficients.json).
+Coefficients are the locked 18-predictor model used in the manuscript and the Tanzania external validation (`datasheets/published_18_predictors.txt` in `CPCCRN analyses ML model`), stored in [`assets/model/coefficients.json`](assets/model/coefficients.json). Regenerate coefficients and R-scored test cases with `Rscript scripts/export_locked18_web_params.R`, then check with `node scripts/validate-model.mjs` and `node scripts/validate-test-cases.mjs`.
+
+| Group | Predictors |
+| --- | --- |
+| PRISM-III (6) | Low PaO₂, high BUN, pH, potassium, high temperature, bicarbonate |
+| PELOD (5) | White blood cell count, platelets, prothrombin time, heart rate, lactate |
+| Clinical characteristics (5) | Vasopressor use, inpatient admission, postoperative admission, previous admission, malignancy |
+| Demographics (2) | Weight, male sex |
 
 ## Local preview
 

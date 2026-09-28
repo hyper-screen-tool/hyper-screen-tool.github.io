@@ -22,8 +22,8 @@ console.log("Delta:", delta.toExponential(3));
 console.log("Predictors:", MODEL.predictors.length);
 console.log("Classification:", result.classification);
 
-if (MODEL.predictors.length !== 19) {
-  console.error("Expected 19 predictors");
+if (MODEL.predictors.length !== 18) {
+  console.error("Expected 18 predictors");
   process.exit(1);
 }
 
