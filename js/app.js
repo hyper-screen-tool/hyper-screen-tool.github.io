@@ -162,7 +162,7 @@ function renderForm() {
   ageSection.className = "form-section";
   const ageHeading = document.createElement("h3");
   ageHeading.className = "form-section-title";
-  ageHeading.textContent = "Age";
+  ageHeading.textContent = "Age (not a model predictor)";
   const ageField = document.createElement("div");
   ageField.className = "field";
   ageField.innerHTML = `
@@ -175,6 +175,7 @@ function renderForm() {
         autocomplete="off" inputmode="decimal" min="0" step="0.01"
         placeholder="Required" required />
     </div>
+    <p class="field-hint">Used only to choose age-appropriate normal values when heart rate or BUN is missing.</p>
   `;
   ageSection.append(ageHeading, ageField);
   form.append(ageSection);
