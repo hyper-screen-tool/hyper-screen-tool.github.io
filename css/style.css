@@ -337,6 +337,64 @@ a {
   font-weight: 600;
 }
 
+.method-options {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.method-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: #fbfcfe;
+  cursor: pointer;
+  color: var(--ink-muted);
+}
+
+.method-option:has(:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.method-option input {
+  margin-top: 0.2rem;
+  accent-color: var(--accent);
+}
+
+.method-option-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.method-option-copy strong {
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
+.method-option-setting {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.method-option-desc {
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--ink-muted);
+}
+
+.imputed-method {
+  font-weight: 600;
+  color: var(--ink);
+}
+
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -696,7 +754,8 @@ a {
 
   .value-input,
   .missing-toggle,
-  .binary-option {
+  .binary-option,
+  .method-option {
     background: #101a27;
   }
 

@@ -1,5 +1,6 @@
 import { MODEL } from "./model-config.js";
 import { TEST_CASES } from "./test-cases.js";
+import { IMPUTATION_METHODS } from "./imputation.js";
 import {
   predict,
   formatRiskScore,
@@ -157,7 +158,72 @@ function createBinaryField(predictor) {
   return field;
 }
 
+function readImputationMethod() {
+  const selected = form.querySelector('input[name="imputation-method"]:checked');
+  return selected?.value === "median" ? "median" : "normal_midpoint";
+}
+
+function setImputationMethod(method) {
+  const radio = form.querySelector(
+    `input[name="imputation-method"][value="${method}"]`
+  );
+  if (radio) radio.checked = true;
+  updateAgeHint();
+}
+
+function updateAgeHint() {
+  const hint = document.getElementById("age-imputation-hint");
+  if (!hint) return;
+  hint.textContent =
+    readImputationMethod() === "median"
+      ? "Age is still required. Missing clinical values are filled with derivation-cohort medians."
+      : "Used to choose age-banded PRISM/PELOD healthy-range midpoints when clinical values are missing.";
+}
+
+function renderImputationMethodSection() {
+  const section = document.createElement("section");
+  section.className = "form-section";
+
+  const heading = document.createElement("h3");
+  heading.className = "form-section-title";
+  heading.textContent = "Missing-data method";
+
+  const options = document.createElement("div");
+  options.className = "method-options";
+  options.setAttribute("role", "radiogroup");
+  options.setAttribute("aria-label", "Missing-data method");
+
+  for (const method of Object.values(IMPUTATION_METHODS)) {
+    const optionLabel = document.createElement("label");
+    optionLabel.className = "method-option";
+
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "imputation-method";
+    radio.value = method.id;
+    radio.checked = method.id === "normal_midpoint";
+
+    const copy = document.createElement("span");
+    copy.className = "method-option-copy";
+    copy.innerHTML = `<strong>${method.label}</strong><span class="method-option-setting">${method.setting}</span><span class="method-option-desc">${method.description}</span>`;
+
+    optionLabel.append(radio, copy);
+    options.append(optionLabel);
+  }
+
+  options.addEventListener("change", () => {
+    updateAgeHint();
+    clearTestCaseBanner();
+    if (hasCalculated) runCalculation();
+  });
+
+  section.append(heading, options);
+  form.append(section);
+}
+
 function renderForm() {
+  renderImputationMethodSection();
+
   const ageSection = document.createElement("section");
   ageSection.className = "form-section";
   const ageHeading = document.createElement("h3");
@@ -175,7 +241,7 @@ function renderForm() {
         autocomplete="off" inputmode="decimal" min="0" step="0.01"
         placeholder="Required" required />
     </div>
-    <p class="field-hint">Used only to choose age-appropriate normal values when clinical values are missing.</p>
+    <p class="field-hint" id="age-imputation-hint">Used to choose age-banded PRISM/PELOD healthy-range midpoints when clinical values are missing.</p>
   `;
   ageSection.append(ageHeading, ageField);
   form.append(ageSection);
@@ -274,6 +340,7 @@ function loadTestCase(testCaseId) {
 
   isLoadingTestCase = true;
   activeTestCase = testCase;
+  setImputationMethod("normal_midpoint");
 
   for (const predictor of MODEL.predictors) {
     const entry = testCase.inputs[predictor.id] ?? { missing: true };
@@ -375,8 +442,20 @@ function renderContributions(contributions) {
   }
 }
 
-function renderImputedFields(fields) {
+function formatImputedNumber(value) {
+  if (!Number.isFinite(value)) return "—";
+  if (Number.isInteger(value)) return String(value);
+  return String(Number(value.toFixed(3)));
+}
+
+function renderImputedFields(fields, method) {
   imputedList.replaceChildren();
+
+  const methodMeta = IMPUTATION_METHODS[method] ?? IMPUTATION_METHODS.normal_midpoint;
+  const methodItem = document.createElement("li");
+  methodItem.className = "imputed-method";
+  methodItem.textContent = `Method: ${methodMeta.label}`;
+  imputedList.append(methodItem);
 
   if (fields.length === 0) {
     const item = document.createElement("li");
@@ -385,9 +464,14 @@ function renderImputedFields(fields) {
     return;
   }
 
-  for (const label of fields) {
+  for (const field of fields) {
     const item = document.createElement("li");
-    item.textContent = label;
+    const label = typeof field === "string" ? field : field.label;
+    if (typeof field === "string") {
+      item.textContent = label;
+    } else {
+      item.textContent = `${label} → ${formatImputedNumber(field.value)} (${field.source})`;
+    }
     imputedList.append(item);
   }
 }
@@ -432,7 +516,7 @@ function runCalculation() {
     return;
   }
 
-  const result = predict(readInputs(), ageYears);
+  const result = predict(readInputs(), ageYears, readImputationMethod());
   hasCalculated = true;
 
   resultPlaceholder.hidden = true;
@@ -445,7 +529,7 @@ function runCalculation() {
   classificationBadge.textContent = classificationLabel(result.classification);
   classificationBadge.className = `classification-badge is-${result.classification}`;
 
-  renderImputedFields(result.imputedFields);
+  renderImputedFields(result.imputedFields, result.imputationMethod);
   renderContributions(result.contributions);
   evaluateTestCase(result);
 }
@@ -454,6 +538,7 @@ function resetForm() {
   form.reset();
   hasCalculated = false;
   testCaseSelect.value = "";
+  setImputationMethod("normal_midpoint");
   clearTestCaseBanner();
 
   const advancedDetails = document.getElementById("advanced-details");

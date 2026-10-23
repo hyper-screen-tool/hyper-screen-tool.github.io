@@ -36,10 +36,10 @@
           <div class="panel-header">
             <h2 id="inputs-heading">Patient inputs</h2>
             <p>
-              Enter age and available PRISM-III, PELOD, clinical
-              characteristic, and demographic variables. Check
-              <strong>Missing</strong> or leave a clinical field blank if value
-              was not measured.
+              Choose an imputation method, then enter age and available
+              PRISM-III, PELOD, clinical characteristic, and demographic
+              variables. Check <strong>Missing</strong> or leave a clinical
+              field blank if the value was not measured.
             </p>
           </div>
 
@@ -153,11 +153,14 @@
         <article class="info-card">
           <h2>Missing data</h2>
           <p>
-            Missing PRISM/PELOD physiology values are imputed using published
-            healthy-range midpoints. Weight and other non-PRISM predictors use
-            derivation-cohort medians, matching the primary manuscript analysis.
-            Imputed clinical fields are listed in the results panel. Age is
-            required and is not imputed.
+            Choose how missing values are filled. The primary option uses
+            published PRISM/PELOD healthy-range midpoints (age-banded where
+            applicable) and treats missing binary indicators as absent. The
+            limited-resource option fills missing values with
+            derivation-cohort medians, for settings where unmeasured physiology
+            cannot be assumed normal. Weight always uses the derivation-cohort
+            median. Imputed fields and the filled values are listed in the
+            results panel. Age is required and is not imputed.
           </p>
           <p>
             Model coefficients are available in

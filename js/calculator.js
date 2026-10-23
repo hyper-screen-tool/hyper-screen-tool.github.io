@@ -1,5 +1,5 @@
 import { MODEL } from "./model-config.js";
-import { imputeValue } from "./imputation.js";
+import { imputeValue, imputationSourceLabel } from "./imputation.js";
 
 function sigmoid(logit) {
   if (logit >= 0) {
@@ -13,8 +13,9 @@ function sigmoid(logit) {
 /**
  * @param {Record<string, { value: number, imputed: boolean }>} inputs
  * @param {number | null | undefined} ageYears
+ * @param {"normal_midpoint" | "median"} [imputationMethod]
  */
-export function predict(inputs, ageYears = null) {
+export function predict(inputs, ageYears = null, imputationMethod = "normal_midpoint") {
   let linearPredictor = MODEL.intercept;
   const contributions = [];
   const imputedFields = [];
@@ -23,11 +24,15 @@ export function predict(inputs, ageYears = null) {
     const entry = inputs[predictor.id];
     const imputed = entry?.imputed ?? true;
     const value = imputed
-      ? imputeValue(predictor, ageYears)
-      : (entry?.value ?? imputeValue(predictor, ageYears));
+      ? imputeValue(predictor, ageYears, imputationMethod)
+      : (entry?.value ?? imputeValue(predictor, ageYears, imputationMethod));
 
     if (imputed) {
-      imputedFields.push(predictor.label);
+      imputedFields.push({
+        label: predictor.label,
+        value,
+        source: imputationSourceLabel(predictor, imputationMethod),
+      });
     }
 
     const contribution = predictor.coefficient * value;
@@ -58,6 +63,7 @@ export function predict(inputs, ageYears = null) {
     threshold: MODEL.threshold,
     contributions,
     imputedFields,
+    imputationMethod,
   };
 }
 

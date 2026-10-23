@@ -8,7 +8,7 @@ Web calculator for the pediatric critical care **hyperinflammatory vs hypoinflam
 
 - Implements the **elastic-net penalized logistic regression** model trained on **CAF-PINT, PALI, and REDVENT** pediatric cohorts
 - Uses the published **lambda.min coefficients** and **0.70 operating threshold** on the **risk score** (weighted training scale)
-- Supports **missing inputs** via PRISM/PELOD healthy-range midpoint imputation (age-stratified where applicable) and derivation-cohort median for weight, matching the primary manuscript analysis
+- Supports **missing inputs** with a choice of PRISM/PELOD healthy-range midpoint imputation (primary analysis) or derivation-cohort **median** imputation (limited-resource settings)
 - Runs entirely in the browser — no patient data is sent to a server
 
 ## Model summary
@@ -21,7 +21,7 @@ Web calculator for the pediatric critical care **hyperinflammatory vs hypoinflam
 | Positive-class weight | 5.5 |
 | Operating threshold (risk score) | 0.70 |
 | Displayed output | Risk score (0–1) |
-| Missing data | PRISM/PELOD midpoint imputation (+ derivation median for weight) |
+| Missing data | Normal-reference midpoint (primary) or derivation-cohort median (limited-resource) |
 
 Coefficients are the locked 18-predictor model used in the manuscript and the Tanzania external validation (`datasheets/published_18_predictors.txt` in `CPCCRN analyses ML model`), stored in [`assets/model/coefficients.json`](assets/model/coefficients.json). Regenerate coefficients and R-scored test cases with `Rscript scripts/export_locked18_web_params.R`, then check with `node scripts/validate-model.mjs` and `node scripts/validate-test-cases.mjs`.
 

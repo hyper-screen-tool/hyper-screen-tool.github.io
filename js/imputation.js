@@ -1,6 +1,29 @@
 /**
- * PRISM/PELOD normal-reference (midpoint) imputation — mirrors prism_peleod_normal_imputation.R
+ * Missing-value imputation for HYPER-SCREEN.
+ *
+ * - normal_midpoint: PRISM/PELOD healthy-range midpoints (primary US analysis).
+ * - median: derivation-cohort medians (limited-resource settings; unmeasured
+ *   physiology is not assumed normal).
  */
+
+export const IMPUTATION_METHODS = {
+  normal_midpoint: {
+    id: "normal_midpoint",
+    label: "Normal-reference midpoint",
+    shortLabel: "healthy-range midpoint",
+    setting: "Primary analysis",
+    description:
+      "Missing PRISM/PELOD physiology is filled with the midpoint of the published 0-point healthy range (age-banded where applicable). Binary indicators are imputed as absent. Use when unmeasured values can reasonably be assumed normal.",
+  },
+  median: {
+    id: "median",
+    label: "Median (limited-resource settings)",
+    shortLabel: "derivation-cohort median",
+    setting: "Limited-resource settings",
+    description:
+      "Missing values are filled with derivation-cohort medians. Use when unmeasured physiology cannot be assumed normal, as in resource-limited settings.",
+  },
+};
 
 const LOOKUP = [
   { variable: "prismph", age_band: "all", normal_mid: 7.375 },
@@ -56,9 +79,10 @@ export function lookupNormalMid(variable, ageBand = "child") {
 /**
  * @param {{ id: string, imputation?: string, derivationMedian?: number }} predictor
  * @param {number | null | undefined} ageYears
+ * @param {"normal_midpoint" | "median"} [method]
  */
-export function imputeValue(predictor, ageYears) {
-  if (predictor.imputation === "derivation_median") {
+export function imputeValue(predictor, ageYears, method = "normal_midpoint") {
+  if (method === "median" || predictor.imputation === "derivation_median") {
     return predictor.derivationMedian ?? 0;
   }
   if (PRISM_PELOD_VARS.has(predictor.id)) {
@@ -66,6 +90,13 @@ export function imputeValue(predictor, ageYears) {
     if (mid != null) return mid;
   }
   return predictor.derivationMedian ?? 0;
+}
+
+export function imputationSourceLabel(predictor, method = "normal_midpoint") {
+  if (method === "median" || predictor.imputation === "derivation_median") {
+    return IMPUTATION_METHODS.median.shortLabel;
+  }
+  return IMPUTATION_METHODS.normal_midpoint.shortLabel;
 }
 
 export function isPrismPeleodVariable(variable) {
